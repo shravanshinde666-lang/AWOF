@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment
+.env
+backend/.env
+frontend/.env
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# AWOF runtime
+storage/uploads/*
+!storage/uploads/.gitkeep
+storage/models/*
+!storage/models/.gitkeep
+storage/*.db

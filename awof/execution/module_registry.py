@@ -1,0 +1,2 @@
+from awof.preprocessing import duplicates,missing_values,encoding,scaling,outliers,feature_selection,transformation
+REGISTRY={"duplicate_handling":duplicates.apply,"missing_values":missing_values.apply,"encoding":encoding.apply,"scaling":scaling.apply,"outlier_analysis":outliers.apply,"feature_selection":feature_selection.apply,"dimensionality_reduction":transformation.pca,"temporal_analysis":transformation.temporal,"text_analysis":lambda df,context:{"text_columns":[c for c in context.feature_columns if df[c].dtype=="object"],"status":"prepared"}}

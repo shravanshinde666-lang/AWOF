@@ -1,0 +1,3 @@
+export interface WorkflowNode {id:string;label:string;category:string;capability_id:string|null;status:string;required:boolean;dependencies:string[];reason:string;metadata:Record<string,string|number>;}
+export interface WorkflowEdge {source:string;target:string;}
+export interface WorkflowResult {workflow_id:string;dataset_id:string;algorithm:string;algorithm_version:string;problem_type:string;business_objective:string;nodes:WorkflowNode[];edges:WorkflowEdge[];execution_order:string[];summary:Record<string,number>;validation:{valid:boolean;is_dag:boolean;errors:string[];warnings:string[]};excluded_capabilities:Array<{capability_id:string;decision:string;score:number;reason:string}>;optional_included:Array<{capability_id:string;reason:string}>;}

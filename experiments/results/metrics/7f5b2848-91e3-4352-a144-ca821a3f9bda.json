@@ -1,0 +1,4332 @@
+{
+  "experiment_id": "7f5b2848-91e3-4352-a144-ca821a3f9bda",
+  "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+  "dataset_name": "phase_8.csv",
+  "problem_type": "classification",
+  "objective": "predict_behavior",
+  "target": "churn",
+  "timestamp": "2026-09-23T04:23:26.085043+00:00",
+  "metadata": {
+    "runs": 1,
+    "random_state": 42,
+    "model_registry_version": "AMRA-1.0",
+    "acsa_version": "ACSA-1.0",
+    "awga_version": "AWGA-1.0",
+    "amra_version": "AMRA-1.0",
+    "software_versions": {
+      "python": "3.14.5",
+      "scikit_learn": "1.9.1",
+      "pandas": "3.0.6",
+      "numpy": "2.5.3"
+    },
+    "memory_measurement": "Peak Python allocations measured with tracemalloc; not total machine RAM.",
+    "configuration": {
+      "problem_type": "classification",
+      "business_objective": "predict_behavior",
+      "target_column": "churn"
+    }
+  },
+  "baseline": {
+    "pipeline": "fixed_baseline",
+    "experiment_name": "pytest-api",
+    "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+    "problem_type": "classification",
+    "objective": "predict_behavior",
+    "target": "churn",
+    "timestamp": "2026-09-23T04:23:19.608618+00:00",
+    "workflow_modules": {
+      "considered": 4,
+      "executed": 4,
+      "selected": 4,
+      "pruned": 0,
+      "ids": [
+        "encoding",
+        "scaling",
+        "feature_selection",
+        "classification"
+      ],
+      "pruned_ids": []
+    },
+    "models": {
+      "considered": 4,
+      "selected": 3,
+      "trained": 3,
+      "failed": 0,
+      "considered_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier",
+        "xgboost_classifier"
+      ],
+      "selected_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier"
+      ],
+      "trained_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier"
+      ],
+      "failed_ids": [],
+      "unavailable_ids": [
+        "xgboost_classifier"
+      ],
+      "best_model": {
+        "model_id": "logistic_regression",
+        "why_selected": "Highest F1 among successfully trained recommended models.",
+        "test_metrics": {
+          "accuracy": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "roc_auc": 0.0,
+          "roc_auc_explanation": null
+        }
+      },
+      "best_metrics": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            0,
+            3
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "roc_auc": 0.0,
+        "roc_auc_explanation": null
+      },
+      "model_results": [
+        {
+          "model_id": "logistic_regression",
+          "status": "completed",
+          "training_duration_ms": 372.566,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.393333,
+            "scores": [
+              0.6,
+              0.566667,
+              0.6,
+              0.0,
+              0.2
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        },
+        {
+          "model_id": "random_forest_classifier",
+          "status": "completed",
+          "training_duration_ms": 4252.62,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.2,
+            "scores": [
+              0.4,
+              0.4,
+              0.2,
+              0.0,
+              0.0
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        },
+        {
+          "model_id": "gradient_boosting_classifier",
+          "status": "completed",
+          "training_duration_ms": 1554.581,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.04,
+            "scores": [
+              0.0,
+              0.0,
+              0.2,
+              0.0,
+              0.0
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        }
+      ],
+      "pipeline_count": 3,
+      "problem_type": "classification"
+    },
+    "timings_ms": {
+      "execution": 8.367,
+      "pruning": 0.0,
+      "profiling": 33.106,
+      "model_recommendation": 0.0,
+      "configuration_acsa_awga": 0.0,
+      "preprocessing": 0.98,
+      "evaluation": 0.0,
+      "overall": 6222.741,
+      "model_training": 6180.213
+    },
+    "resources": {
+      "cpu_process_time_ms": 6031.25,
+      "peak_python_memory_mb": 0.736312
+    },
+    "best_model": {
+      "model_id": "logistic_regression",
+      "why_selected": "Highest F1 among successfully trained recommended models.",
+      "test_metrics": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            0,
+            3
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "roc_auc": 0.0,
+        "roc_auc_explanation": null
+      }
+    },
+    "best_metrics": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "roc_auc": 0.0,
+      "roc_auc_explanation": null
+    },
+    "split": {
+      "strategy": "train_test_split",
+      "stratified": true,
+      "random_state": 42,
+      "test_size": 0.2,
+      "train_rows": 24,
+      "test_rows": 6,
+      "test_index_fingerprint": "1749b3303bdb3171"
+    },
+    "reproducibility": {
+      "random_state": 42,
+      "test_size": 0.2,
+      "split_policy": "Phase 6 deterministic train_test_split; learned preprocessing fits on train data only.",
+      "model_registry_version": "AMRA-1.0",
+      "acsa_version": "ACSA-1.0",
+      "awga_version": "AWGA-1.0",
+      "python_version": "3.14.5",
+      "numpy_version": "2.5.3",
+      "pandas_version": "3.0.6",
+      "scikit_learn_version": "1.9.1"
+    },
+    "warnings": [
+      "Baseline preprocessing uses the same Phase 6 train-fitted imputation, encoding, and scaling implementation as AWOF.",
+      "Evaluation timing is included in model_training because Phase 6 evaluates each model within its training transaction."
+    ],
+    "models_considered": 4,
+    "models_trained": 3,
+    "execution_time_ms": 6222.741,
+    "peak_memory_mb": 0.736312,
+    "baseline_modules_considered": 4,
+    "baseline_modules_executed": 4,
+    "preparation": {
+      "input_rows": 30,
+      "output_rows": 30,
+      "duplicates_removed": 0,
+      "duplicate_handling_executed": false
+    },
+    "execution": {
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "workflow_id": "fixed-baseline-299cafde-2ac7-450c-9827-1887883dc219",
+      "node_results": [
+        {
+          "node_id": "dataset_input",
+          "status": "completed",
+          "duration_ms": 0.002,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {}
+        },
+        {
+          "node_id": "profile",
+          "status": "completed",
+          "duration_ms": 0.001,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {}
+        },
+        {
+          "node_id": "encoding",
+          "status": "completed",
+          "duration_ms": 0.344,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {
+            "columns_encoded": [],
+            "input_feature_count": 4,
+            "output_feature_count": 4,
+            "generated_feature_names": [
+              "customer_id",
+              "age",
+              "monthly_spend",
+              "plan"
+            ]
+          }
+        },
+        {
+          "node_id": "scaling",
+          "status": "completed",
+          "duration_ms": 4.956,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {
+            "columns_scaled": [
+              "age",
+              "monthly_spend"
+            ],
+            "scaler_type": "StandardScaler"
+          }
+        },
+        {
+          "node_id": "feature_selection",
+          "status": "completed",
+          "duration_ms": 0.884,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 4,
+          "details": {
+            "features_before": 4,
+            "features_after": 3,
+            "removed_features": [
+              "customer_id"
+            ],
+            "reason_per_feature": {
+              "customer_id": "identifier_candidate"
+            }
+          }
+        },
+        {
+          "node_id": "classification",
+          "status": "skipped",
+          "duration_ms": 0.002,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 4,
+          "columns_after": 4,
+          "details": {
+            "reason": "Execution implemented in later phase."
+          }
+        },
+        {
+          "node_id": "output",
+          "status": "completed",
+          "duration_ms": 0.001,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 4,
+          "columns_after": 4,
+          "details": {}
+        }
+      ],
+      "summary": {
+        "total_nodes": 7,
+        "executed_nodes": 6,
+        "pruned_nodes": 0,
+        "skipped_nodes": 1,
+        "failed_nodes": 0,
+        "total_duration_ms": 6.271,
+        "initial_rows": 30,
+        "final_rows": 30,
+        "initial_columns": 5,
+        "final_columns": 4
+      },
+      "warnings": [],
+      "errors": []
+    },
+    "model_recommendation": {
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "algorithm": "Fixed baseline model policy",
+      "algorithm_version": "BASELINE-1.0",
+      "problem_type": "classification",
+      "models": [
+        {
+          "model_id": "logistic_regression",
+          "label": "Logistic Regression",
+          "decision": "recommended",
+          "available": true,
+          "score": 1.0,
+          "rank": 1,
+          "reasons": [
+            "Fixed baseline trains every available compatible registry model."
+          ]
+        },
+        {
+          "model_id": "random_forest_classifier",
+          "label": "Random Forest Classifier",
+          "decision": "recommended",
+          "available": true,
+          "score": 1.0,
+          "rank": 2,
+          "reasons": [
+            "Fixed baseline trains every available compatible registry model."
+          ]
+        },
+        {
+          "model_id": "gradient_boosting_classifier",
+          "label": "Gradient Boosting Classifier",
+          "decision": "recommended",
+          "available": true,
+          "score": 1.0,
+          "rank": 3,
+          "reasons": [
+            "Fixed baseline trains every available compatible registry model."
+          ]
+        },
+        {
+          "model_id": "xgboost_classifier",
+          "label": "XGBoost Classifier",
+          "decision": "not_selected",
+          "available": false,
+          "score": 0.0,
+          "rank": null,
+          "reasons": [
+            "Fixed baseline trains every available compatible registry model."
+          ]
+        }
+      ]
+    },
+    "run_statistics": {
+      "timings_ms": {
+        "execution": {
+          "mean": 8.367,
+          "std": 0.0
+        },
+        "pruning": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "profiling": {
+          "mean": 33.106,
+          "std": 0.0
+        },
+        "model_recommendation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "configuration_acsa_awga": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "preprocessing": {
+          "mean": 0.98,
+          "std": 0.0
+        },
+        "evaluation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "overall": {
+          "mean": 6222.741,
+          "std": 0.0
+        },
+        "model_training": {
+          "mean": 6180.213,
+          "std": 0.0
+        }
+      },
+      "resources": {
+        "cpu_process_time_ms": {
+          "mean": 6031.25,
+          "std": 0.0
+        },
+        "peak_python_memory_mb": {
+          "mean": 0.736312,
+          "std": 0.0
+        }
+      }
+    }
+  },
+  "awof": {
+    "pipeline": "awof_adaptive",
+    "experiment_name": "pytest-api",
+    "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+    "problem_type": "classification",
+    "objective": "predict_behavior",
+    "target": "churn",
+    "timestamp": "2026-09-23T04:23:26.080025+00:00",
+    "workflow_modules": {
+      "considered": 3,
+      "executed": 2,
+      "selected": 3,
+      "pruned": 1,
+      "ids": [
+        "classification",
+        "explainability"
+      ],
+      "selected_ids": [
+        "encoding",
+        "classification",
+        "explainability"
+      ],
+      "pruned_ids": [
+        "encoding"
+      ]
+    },
+    "models": {
+      "considered": 4,
+      "selected": 3,
+      "trained": 3,
+      "failed": 0,
+      "considered_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier",
+        "xgboost_classifier"
+      ],
+      "selected_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier"
+      ],
+      "trained_ids": [
+        "logistic_regression",
+        "random_forest_classifier",
+        "gradient_boosting_classifier"
+      ],
+      "failed_ids": [],
+      "unavailable_ids": [
+        "xgboost_classifier"
+      ],
+      "best_model": {
+        "model_id": "logistic_regression",
+        "why_selected": "Highest F1 among successfully trained recommended models.",
+        "test_metrics": {
+          "accuracy": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "roc_auc": 0.0,
+          "roc_auc_explanation": null
+        }
+      },
+      "best_metrics": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            0,
+            3
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "roc_auc": 0.0,
+        "roc_auc_explanation": null
+      },
+      "model_results": [
+        {
+          "model_id": "logistic_regression",
+          "status": "completed",
+          "training_duration_ms": 385.42,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.393333,
+            "scores": [
+              0.6,
+              0.566667,
+              0.6,
+              0.0,
+              0.2
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        },
+        {
+          "model_id": "random_forest_classifier",
+          "status": "completed",
+          "training_duration_ms": 4432.048,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.2,
+            "scores": [
+              0.4,
+              0.4,
+              0.2,
+              0.0,
+              0.0
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        },
+        {
+          "model_id": "gradient_boosting_classifier",
+          "status": "completed",
+          "training_duration_ms": 1547.124,
+          "cross_validation_metrics": {
+            "applicable": true,
+            "folds": 5,
+            "metric": "f1_weighted",
+            "mean": 0.04,
+            "scores": [
+              0.0,
+              0.0,
+              0.2,
+              0.0,
+              0.0
+            ]
+          },
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "feature_count": 3,
+          "train_rows": 24,
+          "test_rows": 6,
+          "warnings": [],
+          "rows_removed_missing_target": 0,
+          "removed_identifier_features": [
+            "customer_id"
+          ],
+          "removed_constant_features": []
+        }
+      ],
+      "pipeline_count": 3,
+      "problem_type": "classification"
+    },
+    "timings_ms": {
+      "execution": 0.302,
+      "pruning": 0.501,
+      "profiling": 26.863,
+      "model_recommendation": 0.975,
+      "configuration_acsa_awga": 1.965,
+      "preprocessing": 0.83,
+      "evaluation": 0.0,
+      "overall": 6461.199,
+      "model_training": 6365.059
+    },
+    "resources": {
+      "cpu_process_time_ms": 6218.75,
+      "peak_python_memory_mb": 0.76128
+    },
+    "best_model": {
+      "model_id": "logistic_regression",
+      "why_selected": "Highest F1 among successfully trained recommended models.",
+      "test_metrics": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusion_matrix": [
+          [
+            0,
+            3
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "roc_auc": 0.0,
+        "roc_auc_explanation": null
+      }
+    },
+    "best_metrics": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "roc_auc": 0.0,
+      "roc_auc_explanation": null
+    },
+    "split": {
+      "strategy": "train_test_split",
+      "stratified": true,
+      "random_state": 42,
+      "test_size": 0.2,
+      "train_rows": 24,
+      "test_rows": 6,
+      "test_index_fingerprint": "1749b3303bdb3171"
+    },
+    "reproducibility": {
+      "random_state": 42,
+      "test_size": 0.2,
+      "split_policy": "Phase 6 deterministic train_test_split; learned preprocessing fits on train data only.",
+      "model_registry_version": "AMRA-1.0",
+      "acsa_version": "ACSA-1.0",
+      "awga_version": "AWGA-1.0",
+      "python_version": "3.14.5",
+      "numpy_version": "2.5.3",
+      "pandas_version": "3.0.6",
+      "scikit_learn_version": "1.9.1"
+    },
+    "warnings": [
+      "Primary predictive metrics use a fresh Phase 6 split/fitted pipeline; full-frame Phase 5 execution is measured separately and is not used for evaluation."
+    ],
+    "models_considered": 4,
+    "models_trained": 3,
+    "execution_time_ms": 6461.199,
+    "peak_memory_mb": 0.76128,
+    "acsa": {
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "algorithm": "Adaptive Capability Scoring Algorithm",
+      "algorithm_version": "ACSA-1.0",
+      "generated_at": "2026-09-23T04:23:19.639358+00:00",
+      "business_objective": {
+        "id": "predict_behavior",
+        "label": "Predict Behavior"
+      },
+      "problem_type": "classification",
+      "thresholds": {
+        "run": 0.7,
+        "optional": 0.4,
+        "skip_below": 0.4
+      },
+      "capabilities": [
+        {
+          "id": "missing_value_handling",
+          "label": "Missing Value Handling",
+          "description": "Assess the need to handle missing values.",
+          "category": "data_quality",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "Overall missingness is 0.00%."
+          ],
+          "signals": {
+            "overall_missing_percentage": 0.0,
+            "maximum_column_missing_percentage": 0.0
+          }
+        },
+        {
+          "id": "duplicate_handling",
+          "label": "Duplicate Handling",
+          "description": "Assess duplicate-row handling need.",
+          "category": "data_quality",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "0 duplicate rows detected."
+          ],
+          "signals": {
+            "duplicate_rows": 0,
+            "duplicate_percentage": 0.0
+          }
+        },
+        {
+          "id": "outlier_analysis",
+          "label": "Outlier Analysis",
+          "description": "Assess numerical outlier analysis need.",
+          "category": "analysis",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "IQR outlier signals were evaluated for numerical features."
+          ],
+          "signals": {
+            "numeric_columns": 2,
+            "columns_with_outliers": 0,
+            "max_outlier_percentage": 0.0
+          }
+        },
+        {
+          "id": "encoding",
+          "label": "Categorical Encoding",
+          "description": "Assess categorical feature encoding need.",
+          "category": "preprocessing",
+          "score": 0.65,
+          "decision": "optional",
+          "reasons": [
+            "Categorical features may require numerical representation for future workflows."
+          ],
+          "signals": {
+            "categorical_feature_columns": 2,
+            "feature_columns": 4,
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "scaling",
+          "label": "Feature Scaling",
+          "description": "Assess feature scaling need.",
+          "category": "preprocessing",
+          "score": 0.375,
+          "decision": "skip",
+          "reasons": [
+            "Scaling relevance depends on task type and observed numerical ranges."
+          ],
+          "signals": {
+            "numeric_feature_columns": 2,
+            "heterogeneous_ranges": false,
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "feature_selection",
+          "label": "Feature Selection",
+          "description": "Assess feature filtering need.",
+          "category": "feature_engineering",
+          "score": 0.199,
+          "decision": "skip",
+          "reasons": [
+            "Feature filtering signals include constants, identifiers, cardinality, and correlation."
+          ],
+          "signals": {
+            "feature_columns": 4,
+            "constant_columns": 0,
+            "identifier_candidates": 1,
+            "high_cardinality_columns": 1,
+            "strong_correlations": 0
+          }
+        },
+        {
+          "id": "imbalance_handling",
+          "label": "Class Imbalance Handling",
+          "description": "Assess classification target imbalance.",
+          "category": "data_quality",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "Class distribution is evaluated only for classification targets."
+          ],
+          "signals": {
+            "class_count": 2,
+            "majority_count": 15,
+            "minority_count": 15,
+            "minority_ratio": 1.0,
+            "imbalance_ratio": 1.0
+          }
+        },
+        {
+          "id": "text_analysis",
+          "label": "Text Analysis",
+          "description": "Assess free-form text analysis need.",
+          "category": "analysis",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "Free-form text columns were detected from the dataset profile."
+          ],
+          "signals": {
+            "text_columns": 0,
+            "feature_columns": 4
+          }
+        },
+        {
+          "id": "temporal_analysis",
+          "label": "Temporal Analysis",
+          "description": "Assess datetime-aware analysis need.",
+          "category": "analysis",
+          "score": 0.0,
+          "decision": "skip",
+          "reasons": [
+            "Datetime columns were detected from the dataset profile."
+          ],
+          "signals": {
+            "datetime_columns": 0,
+            "feature_columns": 4
+          }
+        },
+        {
+          "id": "dimensionality_reduction",
+          "label": "Dimensionality Reduction",
+          "description": "Assess dimensionality-reduction need.",
+          "category": "feature_engineering",
+          "score": 0.0225,
+          "decision": "skip",
+          "reasons": [
+            "Dimensionality signals use numerical width and correlation redundancy."
+          ],
+          "signals": {
+            "numeric_feature_columns": 2,
+            "strong_correlations": 0,
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "clustering",
+          "label": "Clustering",
+          "description": "Assess clustering workflow relevance.",
+          "category": "ml",
+          "score": 0.1,
+          "decision": "skip",
+          "reasons": [
+            "Customer segmentation directly requests a clustering workflow."
+          ],
+          "signals": {
+            "business_objective": "predict_behavior",
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "classification",
+          "label": "Classification",
+          "description": "Assess classification workflow relevance.",
+          "category": "ml",
+          "score": 0.95,
+          "decision": "run",
+          "reasons": [
+            "Classification is driven by the configured technical problem type."
+          ],
+          "signals": {
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "regression",
+          "label": "Regression",
+          "description": "Assess regression workflow relevance.",
+          "category": "ml",
+          "score": 0.05,
+          "decision": "skip",
+          "reasons": [
+            "Regression is driven by the configured technical problem type."
+          ],
+          "signals": {
+            "problem_type": "classification"
+          }
+        },
+        {
+          "id": "explainability",
+          "label": "Explainability",
+          "description": "Assess explanation requirements.",
+          "category": "explainability",
+          "score": 0.9,
+          "decision": "run",
+          "reasons": [
+            "Business-facing supervised decisions benefit from explanation."
+          ],
+          "signals": {
+            "problem_type": "classification",
+            "business_objective": "predict_behavior"
+          }
+        },
+        {
+          "id": "business_prioritization",
+          "label": "Business Prioritization",
+          "description": "Assess business prioritization relevance.",
+          "category": "business",
+          "score": 0.6,
+          "decision": "optional",
+          "reasons": [
+            "Business prioritization relevance is driven by the selected objective."
+          ],
+          "signals": {
+            "business_objective": "predict_behavior"
+          }
+        }
+      ],
+      "summary": {
+        "total_capabilities": 15,
+        "run_count": 2,
+        "optional_count": 2,
+        "skip_count": 11
+      }
+    },
+    "awga": {
+      "workflow_id": "9637d80e-3307-4cfd-94df-efd795b97a10",
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "algorithm": "AWGA",
+      "algorithm_version": "AWGA-1.0",
+      "problem_type": "classification",
+      "business_objective": "predict_behavior",
+      "generated_at": "2026-09-23T04:23:19.639940+00:00",
+      "nodes": [
+        {
+          "id": "dataset_input",
+          "label": "Dataset Input",
+          "category": "input",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [],
+          "reason": "Core workflow node",
+          "metadata": {}
+        },
+        {
+          "id": "profile",
+          "label": "Dataset Profile",
+          "category": "profiling",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [
+            "dataset_input"
+          ],
+          "reason": "Core workflow node",
+          "metadata": {}
+        },
+        {
+          "id": "encoding",
+          "label": "Categorical Encoding",
+          "category": "preprocessing",
+          "capability_id": "encoding",
+          "status": "optional",
+          "required": false,
+          "dependencies": [
+            "profile"
+          ],
+          "reason": "Included by deterministic task/dependency resolution.",
+          "metadata": {
+            "acsa_score": 0.65,
+            "source_decision": "optional"
+          }
+        },
+        {
+          "id": "classification",
+          "label": "Classification",
+          "category": "machine_learning",
+          "capability_id": "classification",
+          "status": "selected",
+          "required": true,
+          "dependencies": [
+            "encoding"
+          ],
+          "reason": "ACSA score 0.95 \u2192 RUN",
+          "metadata": {
+            "acsa_score": 0.95,
+            "source_decision": "run"
+          }
+        },
+        {
+          "id": "explainability",
+          "label": "Explainability",
+          "category": "explainability",
+          "capability_id": "explainability",
+          "status": "selected",
+          "required": true,
+          "dependencies": [
+            "classification"
+          ],
+          "reason": "ACSA score 0.90 \u2192 RUN",
+          "metadata": {
+            "acsa_score": 0.9,
+            "source_decision": "run"
+          }
+        },
+        {
+          "id": "output",
+          "label": "Workflow Output",
+          "category": "output",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [
+            "explainability"
+          ],
+          "reason": "Core workflow node",
+          "metadata": {}
+        }
+      ],
+      "edges": [
+        {
+          "source": "dataset_input",
+          "target": "profile"
+        },
+        {
+          "source": "profile",
+          "target": "encoding"
+        },
+        {
+          "source": "encoding",
+          "target": "classification"
+        },
+        {
+          "source": "classification",
+          "target": "explainability"
+        },
+        {
+          "source": "explainability",
+          "target": "output"
+        }
+      ],
+      "execution_order": [
+        "dataset_input",
+        "profile",
+        "encoding",
+        "classification",
+        "explainability",
+        "output"
+      ],
+      "summary": {
+        "total_nodes": 6,
+        "adaptive_nodes": 3,
+        "core_nodes": 3,
+        "included_run_capabilities": 2,
+        "included_optional_capabilities": 1,
+        "excluded_capabilities": 12
+      },
+      "validation": {
+        "valid": true,
+        "is_dag": true,
+        "errors": [],
+        "warnings": []
+      },
+      "excluded_capabilities": [
+        {
+          "capability_id": "missing_value_handling",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "Overall missingness is 0.00%."
+        },
+        {
+          "capability_id": "duplicate_handling",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "0 duplicate rows detected."
+        },
+        {
+          "capability_id": "outlier_analysis",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "IQR outlier signals were evaluated for numerical features."
+        },
+        {
+          "capability_id": "scaling",
+          "decision": "skip",
+          "score": 0.375,
+          "reason": "Scaling relevance depends on task type and observed numerical ranges."
+        },
+        {
+          "capability_id": "feature_selection",
+          "decision": "skip",
+          "score": 0.199,
+          "reason": "Feature filtering signals include constants, identifiers, cardinality, and correlation."
+        },
+        {
+          "capability_id": "imbalance_handling",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "Class distribution is evaluated only for classification targets."
+        },
+        {
+          "capability_id": "text_analysis",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "Free-form text columns were detected from the dataset profile."
+        },
+        {
+          "capability_id": "temporal_analysis",
+          "decision": "skip",
+          "score": 0.0,
+          "reason": "Datetime columns were detected from the dataset profile."
+        },
+        {
+          "capability_id": "dimensionality_reduction",
+          "decision": "skip",
+          "score": 0.0225,
+          "reason": "Dimensionality signals use numerical width and correlation redundancy."
+        },
+        {
+          "capability_id": "clustering",
+          "decision": "skip",
+          "score": 0.1,
+          "reason": "Customer segmentation directly requests a clustering workflow."
+        },
+        {
+          "capability_id": "regression",
+          "decision": "skip",
+          "score": 0.05,
+          "reason": "Regression is driven by the configured technical problem type."
+        },
+        {
+          "capability_id": "business_prioritization",
+          "decision": "optional",
+          "score": 0.6,
+          "reason": "Optional capability was not required."
+        }
+      ],
+      "optional_included": [
+        {
+          "capability_id": "encoding",
+          "reason": "Included by deterministic task/dependency resolution."
+        }
+      ]
+    },
+    "pruning": {
+      "original_workflow_id": "9637d80e-3307-4cfd-94df-efd795b97a10",
+      "pruned_workflow_id": "5759759d-274e-44c1-b74e-cc171bc2bf8b",
+      "algorithm": "Workflow Pruning Engine",
+      "algorithm_version": "PRUNE-1.0",
+      "nodes": [
+        {
+          "id": "dataset_input",
+          "label": "Dataset Input",
+          "category": "input",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [],
+          "reason": "Core workflow node",
+          "metadata": {}
+        },
+        {
+          "id": "profile",
+          "label": "Dataset Profile",
+          "category": "profiling",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [
+            "dataset_input"
+          ],
+          "reason": "Core workflow node",
+          "metadata": {}
+        },
+        {
+          "id": "classification",
+          "label": "Classification",
+          "category": "machine_learning",
+          "capability_id": "classification",
+          "status": "selected",
+          "required": true,
+          "dependencies": [
+            "encoding"
+          ],
+          "reason": "ACSA score 0.95 \u2192 RUN",
+          "metadata": {
+            "acsa_score": 0.95,
+            "source_decision": "run"
+          }
+        },
+        {
+          "id": "explainability",
+          "label": "Explainability",
+          "category": "explainability",
+          "capability_id": "explainability",
+          "status": "selected",
+          "required": true,
+          "dependencies": [
+            "classification"
+          ],
+          "reason": "ACSA score 0.90 \u2192 RUN",
+          "metadata": {
+            "acsa_score": 0.9,
+            "source_decision": "run"
+          }
+        },
+        {
+          "id": "output",
+          "label": "Workflow Output",
+          "category": "output",
+          "capability_id": null,
+          "status": "core",
+          "required": true,
+          "dependencies": [
+            "explainability"
+          ],
+          "reason": "Core workflow node",
+          "metadata": {}
+        }
+      ],
+      "edges": [
+        {
+          "source": "dataset_input",
+          "target": "profile"
+        },
+        {
+          "source": "profile",
+          "target": "classification"
+        },
+        {
+          "source": "classification",
+          "target": "explainability"
+        },
+        {
+          "source": "explainability",
+          "target": "output"
+        }
+      ],
+      "execution_order": [
+        "dataset_input",
+        "profile",
+        "classification",
+        "explainability",
+        "output"
+      ],
+      "pruned_nodes": [
+        {
+          "node_id": "encoding",
+          "original_status": "optional",
+          "pruning_decision": "prune",
+          "reason": "No categorical feature columns remain.",
+          "signals": {}
+        }
+      ],
+      "summary": {
+        "total_nodes": 5,
+        "pruned_nodes": 1
+      },
+      "validation": {
+        "valid": true,
+        "is_dag": true,
+        "errors": [],
+        "warnings": []
+      }
+    },
+    "execution": {
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "workflow_id": "5759759d-274e-44c1-b74e-cc171bc2bf8b",
+      "node_results": [
+        {
+          "node_id": "dataset_input",
+          "status": "completed",
+          "duration_ms": 0.002,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {}
+        },
+        {
+          "node_id": "profile",
+          "status": "completed",
+          "duration_ms": 0.001,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {}
+        },
+        {
+          "node_id": "classification",
+          "status": "skipped",
+          "duration_ms": 0.002,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {
+            "reason": "Execution implemented in later phase."
+          }
+        },
+        {
+          "node_id": "explainability",
+          "status": "skipped",
+          "duration_ms": 0.002,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {
+            "reason": "Execution implemented in later phase."
+          }
+        },
+        {
+          "node_id": "output",
+          "status": "completed",
+          "duration_ms": 0.001,
+          "rows_before": 30,
+          "rows_after": 30,
+          "columns_before": 5,
+          "columns_after": 5,
+          "details": {}
+        }
+      ],
+      "summary": {
+        "total_nodes": 5,
+        "executed_nodes": 3,
+        "pruned_nodes": 1,
+        "skipped_nodes": 2,
+        "failed_nodes": 0,
+        "total_duration_ms": 0.057,
+        "initial_rows": 30,
+        "final_rows": 30,
+        "initial_columns": 5,
+        "final_columns": 5
+      },
+      "warnings": [],
+      "errors": []
+    },
+    "amra": {
+      "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+      "algorithm": "AMRA",
+      "algorithm_version": "AMRA-1.0",
+      "problem_type": "classification",
+      "models": [
+        {
+          "model_id": "logistic_regression",
+          "label": "Logistic Regression",
+          "score": 0.64,
+          "rank": 1,
+          "decision": "recommended",
+          "reasons": [
+            "Classification task with 30 rows and 4 candidate features.",
+            "Provides an interpretable model family for comparison.",
+            "Moderate feature width and dataset size suit logistic regression.",
+            "Training pipeline will fit scaling inside each training fold when required."
+          ],
+          "signals": {
+            "row_count": 30,
+            "feature_count": 4,
+            "numeric_feature_count": 2,
+            "categorical_origin_feature_count": 2,
+            "numeric_feature_ratio": 0.5,
+            "categorical_origin_feature_ratio": 0.5,
+            "identifier_candidate_count": 1,
+            "strong_correlation_count": 0,
+            "high_dimensional": false,
+            "large_dataset": false,
+            "moderate_dataset": false,
+            "possible_non_linear_structure": true,
+            "class_imbalance_ratio": 1.0,
+            "scaling_completed": false,
+            "prepared_rows": 30,
+            "problem_type": "classification"
+          },
+          "estimated_complexity": "low",
+          "available": true
+        },
+        {
+          "model_id": "random_forest_classifier",
+          "label": "Random Forest Classifier",
+          "score": 0.6,
+          "rank": 2,
+          "decision": "recommended",
+          "reasons": [
+            "Classification task with 30 rows and 4 candidate features.",
+            "Structured feature signals make a non-linear model family useful to evaluate."
+          ],
+          "signals": {
+            "row_count": 30,
+            "feature_count": 4,
+            "numeric_feature_count": 2,
+            "categorical_origin_feature_count": 2,
+            "numeric_feature_ratio": 0.5,
+            "categorical_origin_feature_ratio": 0.5,
+            "identifier_candidate_count": 1,
+            "strong_correlation_count": 0,
+            "high_dimensional": false,
+            "large_dataset": false,
+            "moderate_dataset": false,
+            "possible_non_linear_structure": true,
+            "class_imbalance_ratio": 1.0,
+            "scaling_completed": false,
+            "prepared_rows": 30,
+            "problem_type": "classification"
+          },
+          "estimated_complexity": "medium",
+          "available": true
+        },
+        {
+          "model_id": "gradient_boosting_classifier",
+          "label": "Gradient Boosting Classifier",
+          "score": 0.6,
+          "rank": 3,
+          "decision": "recommended",
+          "reasons": [
+            "Classification task with 30 rows and 4 candidate features.",
+            "Structured feature signals make a non-linear model family useful to evaluate."
+          ],
+          "signals": {
+            "row_count": 30,
+            "feature_count": 4,
+            "numeric_feature_count": 2,
+            "categorical_origin_feature_count": 2,
+            "numeric_feature_ratio": 0.5,
+            "categorical_origin_feature_ratio": 0.5,
+            "identifier_candidate_count": 1,
+            "strong_correlation_count": 0,
+            "high_dimensional": false,
+            "large_dataset": false,
+            "moderate_dataset": false,
+            "possible_non_linear_structure": true,
+            "class_imbalance_ratio": 1.0,
+            "scaling_completed": false,
+            "prepared_rows": 30,
+            "problem_type": "classification"
+          },
+          "estimated_complexity": "medium",
+          "available": true
+        },
+        {
+          "model_id": "xgboost_classifier",
+          "label": "XGBoost Classifier",
+          "score": 0.0,
+          "rank": null,
+          "decision": "not_selected",
+          "reasons": [
+            "Unavailable: the optional XGBoost package is not installed."
+          ],
+          "signals": {
+            "availability": "unavailable"
+          },
+          "estimated_complexity": "medium",
+          "available": false
+        }
+      ],
+      "signals": {
+        "row_count": 30,
+        "feature_count": 4,
+        "numeric_feature_count": 2,
+        "categorical_origin_feature_count": 2,
+        "numeric_feature_ratio": 0.5,
+        "categorical_origin_feature_ratio": 0.5,
+        "identifier_candidate_count": 1,
+        "strong_correlation_count": 0,
+        "high_dimensional": false,
+        "large_dataset": false,
+        "moderate_dataset": false,
+        "possible_non_linear_structure": true,
+        "class_imbalance_ratio": 1.0,
+        "scaling_completed": false,
+        "prepared_rows": 30,
+        "problem_type": "classification"
+      },
+      "incompatible_models": [
+        {
+          "model_id": "linear_regression",
+          "label": "Linear Regression",
+          "problem_type": "regression",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for regression, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "ridge_regression",
+          "label": "Ridge Regression",
+          "problem_type": "regression",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for regression, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "random_forest_regressor",
+          "label": "Random Forest Regressor",
+          "problem_type": "regression",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for regression, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "gradient_boosting_regressor",
+          "label": "Gradient Boosting Regressor",
+          "problem_type": "regression",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for regression, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "xgboost_regressor",
+          "label": "XGBoost Regressor",
+          "problem_type": "regression",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for regression, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "kmeans",
+          "label": "K-Means",
+          "problem_type": "clustering",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for clustering, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "dbscan",
+          "label": "DBSCAN",
+          "problem_type": "clustering",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for clustering, not the configured classification task, so AMRA did not score it."
+          ]
+        },
+        {
+          "model_id": "agglomerative_clustering",
+          "label": "Agglomerative Clustering",
+          "problem_type": "clustering",
+          "score": 0.0,
+          "rank": null,
+          "decision": "incompatible",
+          "reasons": [
+            "This model is for clustering, not the configured classification task, so AMRA did not score it."
+          ]
+        }
+      ],
+      "summary": {
+        "models_evaluated": 4,
+        "models_recommended": 3,
+        "top_k": 3,
+        "unavailable_models": [
+          "xgboost_classifier"
+        ]
+      }
+    },
+    "business_output": {
+      "status": "completed",
+      "applicability": "applicable",
+      "explainability": {
+        "method": "linear_coefficients",
+        "global_importance": [
+          {
+            "feature": "plan_basic",
+            "original_feature": "plan",
+            "importance": 0.60053024,
+            "direction": "positive",
+            "rank": 1
+          },
+          {
+            "feature": "monthly_spend",
+            "original_feature": "monthly_spend",
+            "importance": 0.42431448,
+            "direction": "positive",
+            "rank": 2
+          },
+          {
+            "feature": "plan_standard",
+            "original_feature": "plan",
+            "importance": 0.41400956,
+            "direction": "negative",
+            "rank": 3
+          },
+          {
+            "feature": "plan_premium",
+            "original_feature": "plan",
+            "importance": 0.18648025,
+            "direction": "negative",
+            "rank": 4
+          },
+          {
+            "feature": "age",
+            "original_feature": "age",
+            "importance": 0.02645649,
+            "direction": "negative",
+            "rank": 5
+          }
+        ],
+        "local_explanation": {
+          "row_index": 0,
+          "prediction": "yes",
+          "baseline_value": 0.0350219,
+          "prediction_probability": 0.52833816,
+          "probabilities_by_class": {
+            "no": 0.47166184,
+            "yes": 0.52833816
+          },
+          "method": "linear_coefficients",
+          "feature_contributions": [
+            {
+              "feature": "plan_basic",
+              "original_feature": "plan",
+              "importance": 0.60053024,
+              "contribution": 0.60053024,
+              "direction": "positive",
+              "rank": 1
+            },
+            {
+              "feature": "monthly_spend",
+              "original_feature": "monthly_spend",
+              "importance": 0.56463037,
+              "contribution": -0.56463037,
+              "direction": "negative",
+              "rank": 2
+            },
+            {
+              "feature": "age",
+              "original_feature": "age",
+              "importance": 0.04255246,
+              "contribution": 0.04255246,
+              "direction": "positive",
+              "rank": 3
+            },
+            {
+              "feature": "plan_premium",
+              "original_feature": "plan",
+              "importance": 0.0,
+              "contribution": -0.0,
+              "direction": "neutral",
+              "rank": 4
+            },
+            {
+              "feature": "plan_standard",
+              "original_feature": "plan",
+              "importance": 0.0,
+              "contribution": -0.0,
+              "direction": "neutral",
+              "rank": 5
+            }
+          ],
+          "top_positive_factors": [
+            {
+              "feature": "plan_basic",
+              "original_feature": "plan",
+              "importance": 0.60053024,
+              "contribution": 0.60053024,
+              "direction": "positive",
+              "rank": 1
+            },
+            {
+              "feature": "age",
+              "original_feature": "age",
+              "importance": 0.04255246,
+              "contribution": 0.04255246,
+              "direction": "positive",
+              "rank": 3
+            }
+          ],
+          "top_negative_factors": [
+            {
+              "feature": "monthly_spend",
+              "original_feature": "monthly_spend",
+              "importance": 0.56463037,
+              "contribution": -0.56463037,
+              "direction": "negative",
+              "rank": 2
+            }
+          ]
+        }
+      },
+      "cips": {
+        "risk_direction": "positive_risk_probability",
+        "signal_mapping": [
+          {
+            "signal": "business_value",
+            "source_column": "monthly_spend"
+          }
+        ],
+        "effective_weights": {
+          "risk": 0.6428571428571429,
+          "business_value": 0.35714285714285715
+        },
+        "summary": {
+          "entities_scored": 30,
+          "immediate_count": 2,
+          "high_count": 3,
+          "medium_count": 13,
+          "monitor_count": 12
+        },
+        "top_entities": [
+          {
+            "row_index": 6,
+            "entity_id": "customer-06",
+            "prediction": "yes",
+            "risk_probability": 0.78725904,
+            "cips_score": 86.323795,
+            "priority_level": "immediate",
+            "signals": {
+              "risk": 0.78725904,
+              "business_value": 1.0
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Immediate review/intervention recommended."
+          },
+          {
+            "row_index": 27,
+            "entity_id": "customer-27",
+            "prediction": "yes",
+            "risk_probability": 0.78101123,
+            "cips_score": 85.92215,
+            "priority_level": "immediate",
+            "signals": {
+              "risk": 0.78101123,
+              "business_value": 1.0
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Immediate review/intervention recommended."
+          },
+          {
+            "row_index": 12,
+            "entity_id": "customer-12",
+            "prediction": "yes",
+            "risk_probability": 0.74388291,
+            "cips_score": 77.582949,
+            "priority_level": "high",
+            "signals": {
+              "risk": 0.74388291,
+              "business_value": 0.83333333
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Prioritize for proactive outreach."
+          },
+          {
+            "row_index": 13,
+            "entity_id": "customer-13",
+            "prediction": "yes",
+            "risk_probability": 0.61737151,
+            "cips_score": 75.402454,
+            "priority_level": "high",
+            "signals": {
+              "risk": 0.61737151,
+              "business_value": 1.0
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Prioritize for proactive outreach."
+          },
+          {
+            "row_index": 20,
+            "entity_id": "customer-20",
+            "prediction": "yes",
+            "risk_probability": 0.5744656,
+            "cips_score": 72.644217,
+            "priority_level": "high",
+            "signals": {
+              "risk": 0.5744656,
+              "business_value": 1.0
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Prioritize for proactive outreach."
+          },
+          {
+            "row_index": 18,
+            "entity_id": "customer-18",
+            "prediction": "yes",
+            "risk_probability": 0.71428725,
+            "cips_score": 69.72799,
+            "priority_level": "medium",
+            "signals": {
+              "risk": 0.71428725,
+              "business_value": 0.66666667
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Monitor and consider targeted engagement."
+          },
+          {
+            "row_index": 19,
+            "entity_id": "customer-19",
+            "prediction": "yes",
+            "risk_probability": 0.58138359,
+            "cips_score": 67.136564,
+            "priority_level": "medium",
+            "signals": {
+              "risk": 0.58138359,
+              "business_value": 0.83333333
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Monitor and consider targeted engagement."
+          },
+          {
+            "row_index": 5,
+            "entity_id": "customer-05",
+            "prediction": "yes",
+            "risk_probability": 0.52367585,
+            "cips_score": 63.426781,
+            "priority_level": "medium",
+            "signals": {
+              "risk": 0.52367585,
+              "business_value": 0.83333333
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Monitor and consider targeted engagement."
+          },
+          {
+            "row_index": 26,
+            "entity_id": "customer-26",
+            "prediction": "yes",
+            "risk_probability": 0.51446129,
+            "cips_score": 62.834416,
+            "priority_level": "medium",
+            "signals": {
+              "risk": 0.51446129,
+              "business_value": 0.83333333
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Monitor and consider targeted engagement."
+          },
+          {
+            "row_index": 3,
+            "entity_id": "customer-03",
+            "prediction": "yes",
+            "risk_probability": 0.67061726,
+            "cips_score": 60.968252,
+            "priority_level": "medium",
+            "signals": {
+              "risk": 0.67061726,
+              "business_value": 0.5
+            },
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "top_reasons": [
+              "High predicted risk",
+              "High business value"
+            ],
+            "recommended_action": "Monitor and consider targeted engagement."
+          }
+        ]
+      },
+      "warnings": []
+    },
+    "preparation": {
+      "input_rows": 30,
+      "output_rows": 30,
+      "duplicates_removed": 0,
+      "duplicate_handling_executed": false
+    },
+    "acsa_decisions": {
+      "total_capabilities": 15,
+      "run_count": 2,
+      "optional_count": 2,
+      "skip_count": 11
+    },
+    "awga_node_count": 6,
+    "pruned_modules": 1,
+    "executed_modules": 2,
+    "amra_candidates": 4,
+    "amra_selected_models": 3,
+    "trained_models": 3,
+    "run_statistics": {
+      "timings_ms": {
+        "execution": {
+          "mean": 0.302,
+          "std": 0.0
+        },
+        "pruning": {
+          "mean": 0.501,
+          "std": 0.0
+        },
+        "profiling": {
+          "mean": 26.863,
+          "std": 0.0
+        },
+        "model_recommendation": {
+          "mean": 0.975,
+          "std": 0.0
+        },
+        "configuration_acsa_awga": {
+          "mean": 1.965,
+          "std": 0.0
+        },
+        "preprocessing": {
+          "mean": 0.83,
+          "std": 0.0
+        },
+        "evaluation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "overall": {
+          "mean": 6461.199,
+          "std": 0.0
+        },
+        "model_training": {
+          "mean": 6365.059,
+          "std": 0.0
+        }
+      },
+      "resources": {
+        "cpu_process_time_ms": {
+          "mean": 6218.75,
+          "std": 0.0
+        },
+        "peak_python_memory_mb": {
+          "mean": 0.76128,
+          "std": 0.0
+        }
+      }
+    }
+  },
+  "comparison": {
+    "module_reduction_count": 2.0,
+    "module_reduction_percentage": 50.0,
+    "model_reduction_count": 0.0,
+    "model_reduction_percentage": 0.0,
+    "execution_time_difference_ms": -238.458,
+    "execution_time_reduction_percentage": -3.832041,
+    "memory_difference_mb": -0.024968,
+    "memory_reduction_percentage": -3.390954,
+    "performance": {
+      "metric": "f1",
+      "baseline": 0.0,
+      "awof": 0.0,
+      "difference": 0.0,
+      "direction": "awof_f1_minus_baseline_f1"
+    },
+    "factual_statements": [
+      "AWOF executed 2 fewer modules than the fixed pipeline.",
+      "AWOF trained 0 fewer models than the fixed pipeline.",
+      "Mean runtime difference (baseline minus AWOF) was -238.458 ms.",
+      "f1 difference (AWOF minus baseline) was 0.000000 (higher_is_better)."
+    ],
+    "warnings": []
+  },
+  "run_results": {
+    "baseline": [
+      {
+        "pipeline": "fixed_baseline",
+        "experiment_name": "pytest-api",
+        "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+        "problem_type": "classification",
+        "objective": "predict_behavior",
+        "target": "churn",
+        "timestamp": "2026-09-23T04:23:19.608618+00:00",
+        "workflow_modules": {
+          "considered": 4,
+          "executed": 4,
+          "selected": 4,
+          "pruned": 0,
+          "ids": [
+            "encoding",
+            "scaling",
+            "feature_selection",
+            "classification"
+          ],
+          "pruned_ids": []
+        },
+        "models": {
+          "considered": 4,
+          "selected": 3,
+          "trained": 3,
+          "failed": 0,
+          "considered_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier",
+            "xgboost_classifier"
+          ],
+          "selected_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier"
+          ],
+          "trained_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier"
+          ],
+          "failed_ids": [],
+          "unavailable_ids": [
+            "xgboost_classifier"
+          ],
+          "best_model": {
+            "model_id": "logistic_regression",
+            "why_selected": "Highest F1 among successfully trained recommended models.",
+            "test_metrics": {
+              "accuracy": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "confusion_matrix": [
+                [
+                  0,
+                  3
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              "roc_auc": 0.0,
+              "roc_auc_explanation": null
+            }
+          },
+          "best_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "model_results": [
+            {
+              "model_id": "logistic_regression",
+              "status": "completed",
+              "training_duration_ms": 372.566,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.393333,
+                "scores": [
+                  0.6,
+                  0.566667,
+                  0.6,
+                  0.0,
+                  0.2
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            },
+            {
+              "model_id": "random_forest_classifier",
+              "status": "completed",
+              "training_duration_ms": 4252.62,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.2,
+                "scores": [
+                  0.4,
+                  0.4,
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            },
+            {
+              "model_id": "gradient_boosting_classifier",
+              "status": "completed",
+              "training_duration_ms": 1554.581,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.04,
+                "scores": [
+                  0.0,
+                  0.0,
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            }
+          ],
+          "pipeline_count": 3,
+          "problem_type": "classification"
+        },
+        "timings_ms": {
+          "profiling": 33.106,
+          "configuration_acsa_awga": 0.0,
+          "preprocessing": 0.98,
+          "pruning": 0.0,
+          "execution": 8.367,
+          "model_recommendation": 0.0,
+          "model_training": 6180.213,
+          "evaluation": 0.0,
+          "overall": 6222.741
+        },
+        "resources": {
+          "peak_python_memory_mb": 0.736312,
+          "cpu_process_time_ms": 6031.25
+        },
+        "best_model": {
+          "model_id": "logistic_regression",
+          "why_selected": "Highest F1 among successfully trained recommended models.",
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          }
+        },
+        "best_metrics": {
+          "accuracy": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "roc_auc": 0.0,
+          "roc_auc_explanation": null
+        },
+        "split": {
+          "strategy": "train_test_split",
+          "stratified": true,
+          "random_state": 42,
+          "test_size": 0.2,
+          "train_rows": 24,
+          "test_rows": 6,
+          "test_index_fingerprint": "1749b3303bdb3171"
+        },
+        "reproducibility": {
+          "random_state": 42,
+          "test_size": 0.2,
+          "split_policy": "Phase 6 deterministic train_test_split; learned preprocessing fits on train data only.",
+          "model_registry_version": "AMRA-1.0",
+          "acsa_version": "ACSA-1.0",
+          "awga_version": "AWGA-1.0",
+          "python_version": "3.14.5",
+          "numpy_version": "2.5.3",
+          "pandas_version": "3.0.6",
+          "scikit_learn_version": "1.9.1"
+        },
+        "warnings": [
+          "Baseline preprocessing uses the same Phase 6 train-fitted imputation, encoding, and scaling implementation as AWOF.",
+          "Evaluation timing is included in model_training because Phase 6 evaluates each model within its training transaction."
+        ],
+        "models_considered": 4,
+        "models_trained": 3,
+        "execution_time_ms": 6222.741,
+        "peak_memory_mb": 0.736312,
+        "baseline_modules_considered": 4,
+        "baseline_modules_executed": 4,
+        "preparation": {
+          "input_rows": 30,
+          "output_rows": 30,
+          "duplicates_removed": 0,
+          "duplicate_handling_executed": false
+        },
+        "execution": {
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "workflow_id": "fixed-baseline-299cafde-2ac7-450c-9827-1887883dc219",
+          "node_results": [
+            {
+              "node_id": "dataset_input",
+              "status": "completed",
+              "duration_ms": 0.002,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {}
+            },
+            {
+              "node_id": "profile",
+              "status": "completed",
+              "duration_ms": 0.001,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {}
+            },
+            {
+              "node_id": "encoding",
+              "status": "completed",
+              "duration_ms": 0.344,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {
+                "columns_encoded": [],
+                "input_feature_count": 4,
+                "output_feature_count": 4,
+                "generated_feature_names": [
+                  "customer_id",
+                  "age",
+                  "monthly_spend",
+                  "plan"
+                ]
+              }
+            },
+            {
+              "node_id": "scaling",
+              "status": "completed",
+              "duration_ms": 4.956,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {
+                "columns_scaled": [
+                  "age",
+                  "monthly_spend"
+                ],
+                "scaler_type": "StandardScaler"
+              }
+            },
+            {
+              "node_id": "feature_selection",
+              "status": "completed",
+              "duration_ms": 0.884,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 4,
+              "details": {
+                "features_before": 4,
+                "features_after": 3,
+                "removed_features": [
+                  "customer_id"
+                ],
+                "reason_per_feature": {
+                  "customer_id": "identifier_candidate"
+                }
+              }
+            },
+            {
+              "node_id": "classification",
+              "status": "skipped",
+              "duration_ms": 0.002,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 4,
+              "columns_after": 4,
+              "details": {
+                "reason": "Execution implemented in later phase."
+              }
+            },
+            {
+              "node_id": "output",
+              "status": "completed",
+              "duration_ms": 0.001,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 4,
+              "columns_after": 4,
+              "details": {}
+            }
+          ],
+          "summary": {
+            "total_nodes": 7,
+            "executed_nodes": 6,
+            "pruned_nodes": 0,
+            "skipped_nodes": 1,
+            "failed_nodes": 0,
+            "total_duration_ms": 6.271,
+            "initial_rows": 30,
+            "final_rows": 30,
+            "initial_columns": 5,
+            "final_columns": 4
+          },
+          "warnings": [],
+          "errors": []
+        },
+        "model_recommendation": {
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "algorithm": "Fixed baseline model policy",
+          "algorithm_version": "BASELINE-1.0",
+          "problem_type": "classification",
+          "models": [
+            {
+              "model_id": "logistic_regression",
+              "label": "Logistic Regression",
+              "decision": "recommended",
+              "available": true,
+              "score": 1.0,
+              "rank": 1,
+              "reasons": [
+                "Fixed baseline trains every available compatible registry model."
+              ]
+            },
+            {
+              "model_id": "random_forest_classifier",
+              "label": "Random Forest Classifier",
+              "decision": "recommended",
+              "available": true,
+              "score": 1.0,
+              "rank": 2,
+              "reasons": [
+                "Fixed baseline trains every available compatible registry model."
+              ]
+            },
+            {
+              "model_id": "gradient_boosting_classifier",
+              "label": "Gradient Boosting Classifier",
+              "decision": "recommended",
+              "available": true,
+              "score": 1.0,
+              "rank": 3,
+              "reasons": [
+                "Fixed baseline trains every available compatible registry model."
+              ]
+            },
+            {
+              "model_id": "xgboost_classifier",
+              "label": "XGBoost Classifier",
+              "decision": "not_selected",
+              "available": false,
+              "score": 0.0,
+              "rank": null,
+              "reasons": [
+                "Fixed baseline trains every available compatible registry model."
+              ]
+            }
+          ]
+        },
+        "run_index": 1
+      }
+    ],
+    "awof": [
+      {
+        "pipeline": "awof_adaptive",
+        "experiment_name": "pytest-api",
+        "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+        "problem_type": "classification",
+        "objective": "predict_behavior",
+        "target": "churn",
+        "timestamp": "2026-09-23T04:23:26.080025+00:00",
+        "workflow_modules": {
+          "considered": 3,
+          "executed": 2,
+          "selected": 3,
+          "pruned": 1,
+          "ids": [
+            "classification",
+            "explainability"
+          ],
+          "selected_ids": [
+            "encoding",
+            "classification",
+            "explainability"
+          ],
+          "pruned_ids": [
+            "encoding"
+          ]
+        },
+        "models": {
+          "considered": 4,
+          "selected": 3,
+          "trained": 3,
+          "failed": 0,
+          "considered_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier",
+            "xgboost_classifier"
+          ],
+          "selected_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier"
+          ],
+          "trained_ids": [
+            "logistic_regression",
+            "random_forest_classifier",
+            "gradient_boosting_classifier"
+          ],
+          "failed_ids": [],
+          "unavailable_ids": [
+            "xgboost_classifier"
+          ],
+          "best_model": {
+            "model_id": "logistic_regression",
+            "why_selected": "Highest F1 among successfully trained recommended models.",
+            "test_metrics": {
+              "accuracy": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "confusion_matrix": [
+                [
+                  0,
+                  3
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              "roc_auc": 0.0,
+              "roc_auc_explanation": null
+            }
+          },
+          "best_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          },
+          "model_results": [
+            {
+              "model_id": "logistic_regression",
+              "status": "completed",
+              "training_duration_ms": 385.42,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.393333,
+                "scores": [
+                  0.6,
+                  0.566667,
+                  0.6,
+                  0.0,
+                  0.2
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            },
+            {
+              "model_id": "random_forest_classifier",
+              "status": "completed",
+              "training_duration_ms": 4432.048,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.2,
+                "scores": [
+                  0.4,
+                  0.4,
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            },
+            {
+              "model_id": "gradient_boosting_classifier",
+              "status": "completed",
+              "training_duration_ms": 1547.124,
+              "cross_validation_metrics": {
+                "applicable": true,
+                "folds": 5,
+                "metric": "f1_weighted",
+                "mean": 0.04,
+                "scores": [
+                  0.0,
+                  0.0,
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "test_metrics": {
+                "accuracy": 0.0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "confusion_matrix": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    3,
+                    0
+                  ]
+                ],
+                "roc_auc": 0.0,
+                "roc_auc_explanation": null
+              },
+              "feature_count": 3,
+              "train_rows": 24,
+              "test_rows": 6,
+              "warnings": [],
+              "rows_removed_missing_target": 0,
+              "removed_identifier_features": [
+                "customer_id"
+              ],
+              "removed_constant_features": []
+            }
+          ],
+          "pipeline_count": 3,
+          "problem_type": "classification"
+        },
+        "timings_ms": {
+          "profiling": 26.863,
+          "configuration_acsa_awga": 1.965,
+          "preprocessing": 0.83,
+          "pruning": 0.501,
+          "execution": 0.302,
+          "model_recommendation": 0.975,
+          "model_training": 6365.059,
+          "evaluation": 0.0,
+          "overall": 6461.199
+        },
+        "resources": {
+          "peak_python_memory_mb": 0.76128,
+          "cpu_process_time_ms": 6218.75
+        },
+        "best_model": {
+          "model_id": "logistic_regression",
+          "why_selected": "Highest F1 among successfully trained recommended models.",
+          "test_metrics": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "confusion_matrix": [
+              [
+                0,
+                3
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "roc_auc": 0.0,
+            "roc_auc_explanation": null
+          }
+        },
+        "best_metrics": {
+          "accuracy": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": [
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "roc_auc": 0.0,
+          "roc_auc_explanation": null
+        },
+        "split": {
+          "strategy": "train_test_split",
+          "stratified": true,
+          "random_state": 42,
+          "test_size": 0.2,
+          "train_rows": 24,
+          "test_rows": 6,
+          "test_index_fingerprint": "1749b3303bdb3171"
+        },
+        "reproducibility": {
+          "random_state": 42,
+          "test_size": 0.2,
+          "split_policy": "Phase 6 deterministic train_test_split; learned preprocessing fits on train data only.",
+          "model_registry_version": "AMRA-1.0",
+          "acsa_version": "ACSA-1.0",
+          "awga_version": "AWGA-1.0",
+          "python_version": "3.14.5",
+          "numpy_version": "2.5.3",
+          "pandas_version": "3.0.6",
+          "scikit_learn_version": "1.9.1"
+        },
+        "warnings": [
+          "Primary predictive metrics use a fresh Phase 6 split/fitted pipeline; full-frame Phase 5 execution is measured separately and is not used for evaluation."
+        ],
+        "models_considered": 4,
+        "models_trained": 3,
+        "execution_time_ms": 6461.199,
+        "peak_memory_mb": 0.76128,
+        "acsa": {
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "algorithm": "Adaptive Capability Scoring Algorithm",
+          "algorithm_version": "ACSA-1.0",
+          "generated_at": "2026-09-23T04:23:19.639358+00:00",
+          "business_objective": {
+            "id": "predict_behavior",
+            "label": "Predict Behavior"
+          },
+          "problem_type": "classification",
+          "thresholds": {
+            "run": 0.7,
+            "optional": 0.4,
+            "skip_below": 0.4
+          },
+          "capabilities": [
+            {
+              "id": "missing_value_handling",
+              "label": "Missing Value Handling",
+              "description": "Assess the need to handle missing values.",
+              "category": "data_quality",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "Overall missingness is 0.00%."
+              ],
+              "signals": {
+                "overall_missing_percentage": 0.0,
+                "maximum_column_missing_percentage": 0.0
+              }
+            },
+            {
+              "id": "duplicate_handling",
+              "label": "Duplicate Handling",
+              "description": "Assess duplicate-row handling need.",
+              "category": "data_quality",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "0 duplicate rows detected."
+              ],
+              "signals": {
+                "duplicate_rows": 0,
+                "duplicate_percentage": 0.0
+              }
+            },
+            {
+              "id": "outlier_analysis",
+              "label": "Outlier Analysis",
+              "description": "Assess numerical outlier analysis need.",
+              "category": "analysis",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "IQR outlier signals were evaluated for numerical features."
+              ],
+              "signals": {
+                "numeric_columns": 2,
+                "columns_with_outliers": 0,
+                "max_outlier_percentage": 0.0
+              }
+            },
+            {
+              "id": "encoding",
+              "label": "Categorical Encoding",
+              "description": "Assess categorical feature encoding need.",
+              "category": "preprocessing",
+              "score": 0.65,
+              "decision": "optional",
+              "reasons": [
+                "Categorical features may require numerical representation for future workflows."
+              ],
+              "signals": {
+                "categorical_feature_columns": 2,
+                "feature_columns": 4,
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "scaling",
+              "label": "Feature Scaling",
+              "description": "Assess feature scaling need.",
+              "category": "preprocessing",
+              "score": 0.375,
+              "decision": "skip",
+              "reasons": [
+                "Scaling relevance depends on task type and observed numerical ranges."
+              ],
+              "signals": {
+                "numeric_feature_columns": 2,
+                "heterogeneous_ranges": false,
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "feature_selection",
+              "label": "Feature Selection",
+              "description": "Assess feature filtering need.",
+              "category": "feature_engineering",
+              "score": 0.199,
+              "decision": "skip",
+              "reasons": [
+                "Feature filtering signals include constants, identifiers, cardinality, and correlation."
+              ],
+              "signals": {
+                "feature_columns": 4,
+                "constant_columns": 0,
+                "identifier_candidates": 1,
+                "high_cardinality_columns": 1,
+                "strong_correlations": 0
+              }
+            },
+            {
+              "id": "imbalance_handling",
+              "label": "Class Imbalance Handling",
+              "description": "Assess classification target imbalance.",
+              "category": "data_quality",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "Class distribution is evaluated only for classification targets."
+              ],
+              "signals": {
+                "class_count": 2,
+                "majority_count": 15,
+                "minority_count": 15,
+                "minority_ratio": 1.0,
+                "imbalance_ratio": 1.0
+              }
+            },
+            {
+              "id": "text_analysis",
+              "label": "Text Analysis",
+              "description": "Assess free-form text analysis need.",
+              "category": "analysis",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "Free-form text columns were detected from the dataset profile."
+              ],
+              "signals": {
+                "text_columns": 0,
+                "feature_columns": 4
+              }
+            },
+            {
+              "id": "temporal_analysis",
+              "label": "Temporal Analysis",
+              "description": "Assess datetime-aware analysis need.",
+              "category": "analysis",
+              "score": 0.0,
+              "decision": "skip",
+              "reasons": [
+                "Datetime columns were detected from the dataset profile."
+              ],
+              "signals": {
+                "datetime_columns": 0,
+                "feature_columns": 4
+              }
+            },
+            {
+              "id": "dimensionality_reduction",
+              "label": "Dimensionality Reduction",
+              "description": "Assess dimensionality-reduction need.",
+              "category": "feature_engineering",
+              "score": 0.0225,
+              "decision": "skip",
+              "reasons": [
+                "Dimensionality signals use numerical width and correlation redundancy."
+              ],
+              "signals": {
+                "numeric_feature_columns": 2,
+                "strong_correlations": 0,
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "clustering",
+              "label": "Clustering",
+              "description": "Assess clustering workflow relevance.",
+              "category": "ml",
+              "score": 0.1,
+              "decision": "skip",
+              "reasons": [
+                "Customer segmentation directly requests a clustering workflow."
+              ],
+              "signals": {
+                "business_objective": "predict_behavior",
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "classification",
+              "label": "Classification",
+              "description": "Assess classification workflow relevance.",
+              "category": "ml",
+              "score": 0.95,
+              "decision": "run",
+              "reasons": [
+                "Classification is driven by the configured technical problem type."
+              ],
+              "signals": {
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "regression",
+              "label": "Regression",
+              "description": "Assess regression workflow relevance.",
+              "category": "ml",
+              "score": 0.05,
+              "decision": "skip",
+              "reasons": [
+                "Regression is driven by the configured technical problem type."
+              ],
+              "signals": {
+                "problem_type": "classification"
+              }
+            },
+            {
+              "id": "explainability",
+              "label": "Explainability",
+              "description": "Assess explanation requirements.",
+              "category": "explainability",
+              "score": 0.9,
+              "decision": "run",
+              "reasons": [
+                "Business-facing supervised decisions benefit from explanation."
+              ],
+              "signals": {
+                "problem_type": "classification",
+                "business_objective": "predict_behavior"
+              }
+            },
+            {
+              "id": "business_prioritization",
+              "label": "Business Prioritization",
+              "description": "Assess business prioritization relevance.",
+              "category": "business",
+              "score": 0.6,
+              "decision": "optional",
+              "reasons": [
+                "Business prioritization relevance is driven by the selected objective."
+              ],
+              "signals": {
+                "business_objective": "predict_behavior"
+              }
+            }
+          ],
+          "summary": {
+            "total_capabilities": 15,
+            "run_count": 2,
+            "optional_count": 2,
+            "skip_count": 11
+          }
+        },
+        "awga": {
+          "workflow_id": "9637d80e-3307-4cfd-94df-efd795b97a10",
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "algorithm": "AWGA",
+          "algorithm_version": "AWGA-1.0",
+          "problem_type": "classification",
+          "business_objective": "predict_behavior",
+          "generated_at": "2026-09-23T04:23:19.639940+00:00",
+          "nodes": [
+            {
+              "id": "dataset_input",
+              "label": "Dataset Input",
+              "category": "input",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [],
+              "reason": "Core workflow node",
+              "metadata": {}
+            },
+            {
+              "id": "profile",
+              "label": "Dataset Profile",
+              "category": "profiling",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [
+                "dataset_input"
+              ],
+              "reason": "Core workflow node",
+              "metadata": {}
+            },
+            {
+              "id": "encoding",
+              "label": "Categorical Encoding",
+              "category": "preprocessing",
+              "capability_id": "encoding",
+              "status": "optional",
+              "required": false,
+              "dependencies": [
+                "profile"
+              ],
+              "reason": "Included by deterministic task/dependency resolution.",
+              "metadata": {
+                "acsa_score": 0.65,
+                "source_decision": "optional"
+              }
+            },
+            {
+              "id": "classification",
+              "label": "Classification",
+              "category": "machine_learning",
+              "capability_id": "classification",
+              "status": "selected",
+              "required": true,
+              "dependencies": [
+                "encoding"
+              ],
+              "reason": "ACSA score 0.95 \u2192 RUN",
+              "metadata": {
+                "acsa_score": 0.95,
+                "source_decision": "run"
+              }
+            },
+            {
+              "id": "explainability",
+              "label": "Explainability",
+              "category": "explainability",
+              "capability_id": "explainability",
+              "status": "selected",
+              "required": true,
+              "dependencies": [
+                "classification"
+              ],
+              "reason": "ACSA score 0.90 \u2192 RUN",
+              "metadata": {
+                "acsa_score": 0.9,
+                "source_decision": "run"
+              }
+            },
+            {
+              "id": "output",
+              "label": "Workflow Output",
+              "category": "output",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [
+                "explainability"
+              ],
+              "reason": "Core workflow node",
+              "metadata": {}
+            }
+          ],
+          "edges": [
+            {
+              "source": "dataset_input",
+              "target": "profile"
+            },
+            {
+              "source": "profile",
+              "target": "encoding"
+            },
+            {
+              "source": "encoding",
+              "target": "classification"
+            },
+            {
+              "source": "classification",
+              "target": "explainability"
+            },
+            {
+              "source": "explainability",
+              "target": "output"
+            }
+          ],
+          "execution_order": [
+            "dataset_input",
+            "profile",
+            "encoding",
+            "classification",
+            "explainability",
+            "output"
+          ],
+          "summary": {
+            "total_nodes": 6,
+            "adaptive_nodes": 3,
+            "core_nodes": 3,
+            "included_run_capabilities": 2,
+            "included_optional_capabilities": 1,
+            "excluded_capabilities": 12
+          },
+          "validation": {
+            "valid": true,
+            "is_dag": true,
+            "errors": [],
+            "warnings": []
+          },
+          "excluded_capabilities": [
+            {
+              "capability_id": "missing_value_handling",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "Overall missingness is 0.00%."
+            },
+            {
+              "capability_id": "duplicate_handling",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "0 duplicate rows detected."
+            },
+            {
+              "capability_id": "outlier_analysis",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "IQR outlier signals were evaluated for numerical features."
+            },
+            {
+              "capability_id": "scaling",
+              "decision": "skip",
+              "score": 0.375,
+              "reason": "Scaling relevance depends on task type and observed numerical ranges."
+            },
+            {
+              "capability_id": "feature_selection",
+              "decision": "skip",
+              "score": 0.199,
+              "reason": "Feature filtering signals include constants, identifiers, cardinality, and correlation."
+            },
+            {
+              "capability_id": "imbalance_handling",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "Class distribution is evaluated only for classification targets."
+            },
+            {
+              "capability_id": "text_analysis",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "Free-form text columns were detected from the dataset profile."
+            },
+            {
+              "capability_id": "temporal_analysis",
+              "decision": "skip",
+              "score": 0.0,
+              "reason": "Datetime columns were detected from the dataset profile."
+            },
+            {
+              "capability_id": "dimensionality_reduction",
+              "decision": "skip",
+              "score": 0.0225,
+              "reason": "Dimensionality signals use numerical width and correlation redundancy."
+            },
+            {
+              "capability_id": "clustering",
+              "decision": "skip",
+              "score": 0.1,
+              "reason": "Customer segmentation directly requests a clustering workflow."
+            },
+            {
+              "capability_id": "regression",
+              "decision": "skip",
+              "score": 0.05,
+              "reason": "Regression is driven by the configured technical problem type."
+            },
+            {
+              "capability_id": "business_prioritization",
+              "decision": "optional",
+              "score": 0.6,
+              "reason": "Optional capability was not required."
+            }
+          ],
+          "optional_included": [
+            {
+              "capability_id": "encoding",
+              "reason": "Included by deterministic task/dependency resolution."
+            }
+          ]
+        },
+        "pruning": {
+          "original_workflow_id": "9637d80e-3307-4cfd-94df-efd795b97a10",
+          "pruned_workflow_id": "5759759d-274e-44c1-b74e-cc171bc2bf8b",
+          "algorithm": "Workflow Pruning Engine",
+          "algorithm_version": "PRUNE-1.0",
+          "nodes": [
+            {
+              "id": "dataset_input",
+              "label": "Dataset Input",
+              "category": "input",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [],
+              "reason": "Core workflow node",
+              "metadata": {}
+            },
+            {
+              "id": "profile",
+              "label": "Dataset Profile",
+              "category": "profiling",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [
+                "dataset_input"
+              ],
+              "reason": "Core workflow node",
+              "metadata": {}
+            },
+            {
+              "id": "classification",
+              "label": "Classification",
+              "category": "machine_learning",
+              "capability_id": "classification",
+              "status": "selected",
+              "required": true,
+              "dependencies": [
+                "encoding"
+              ],
+              "reason": "ACSA score 0.95 \u2192 RUN",
+              "metadata": {
+                "acsa_score": 0.95,
+                "source_decision": "run"
+              }
+            },
+            {
+              "id": "explainability",
+              "label": "Explainability",
+              "category": "explainability",
+              "capability_id": "explainability",
+              "status": "selected",
+              "required": true,
+              "dependencies": [
+                "classification"
+              ],
+              "reason": "ACSA score 0.90 \u2192 RUN",
+              "metadata": {
+                "acsa_score": 0.9,
+                "source_decision": "run"
+              }
+            },
+            {
+              "id": "output",
+              "label": "Workflow Output",
+              "category": "output",
+              "capability_id": null,
+              "status": "core",
+              "required": true,
+              "dependencies": [
+                "explainability"
+              ],
+              "reason": "Core workflow node",
+              "metadata": {}
+            }
+          ],
+          "edges": [
+            {
+              "source": "dataset_input",
+              "target": "profile"
+            },
+            {
+              "source": "profile",
+              "target": "classification"
+            },
+            {
+              "source": "classification",
+              "target": "explainability"
+            },
+            {
+              "source": "explainability",
+              "target": "output"
+            }
+          ],
+          "execution_order": [
+            "dataset_input",
+            "profile",
+            "classification",
+            "explainability",
+            "output"
+          ],
+          "pruned_nodes": [
+            {
+              "node_id": "encoding",
+              "original_status": "optional",
+              "pruning_decision": "prune",
+              "reason": "No categorical feature columns remain.",
+              "signals": {}
+            }
+          ],
+          "summary": {
+            "total_nodes": 5,
+            "pruned_nodes": 1
+          },
+          "validation": {
+            "valid": true,
+            "is_dag": true,
+            "errors": [],
+            "warnings": []
+          }
+        },
+        "execution": {
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "workflow_id": "5759759d-274e-44c1-b74e-cc171bc2bf8b",
+          "node_results": [
+            {
+              "node_id": "dataset_input",
+              "status": "completed",
+              "duration_ms": 0.002,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {}
+            },
+            {
+              "node_id": "profile",
+              "status": "completed",
+              "duration_ms": 0.001,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {}
+            },
+            {
+              "node_id": "classification",
+              "status": "skipped",
+              "duration_ms": 0.002,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {
+                "reason": "Execution implemented in later phase."
+              }
+            },
+            {
+              "node_id": "explainability",
+              "status": "skipped",
+              "duration_ms": 0.002,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {
+                "reason": "Execution implemented in later phase."
+              }
+            },
+            {
+              "node_id": "output",
+              "status": "completed",
+              "duration_ms": 0.001,
+              "rows_before": 30,
+              "rows_after": 30,
+              "columns_before": 5,
+              "columns_after": 5,
+              "details": {}
+            }
+          ],
+          "summary": {
+            "total_nodes": 5,
+            "executed_nodes": 3,
+            "pruned_nodes": 1,
+            "skipped_nodes": 2,
+            "failed_nodes": 0,
+            "total_duration_ms": 0.057,
+            "initial_rows": 30,
+            "final_rows": 30,
+            "initial_columns": 5,
+            "final_columns": 5
+          },
+          "warnings": [],
+          "errors": []
+        },
+        "amra": {
+          "dataset_id": "539fc915-1f9f-4a26-b297-256589a60b0e",
+          "algorithm": "AMRA",
+          "algorithm_version": "AMRA-1.0",
+          "problem_type": "classification",
+          "models": [
+            {
+              "model_id": "logistic_regression",
+              "label": "Logistic Regression",
+              "score": 0.64,
+              "rank": 1,
+              "decision": "recommended",
+              "reasons": [
+                "Classification task with 30 rows and 4 candidate features.",
+                "Provides an interpretable model family for comparison.",
+                "Moderate feature width and dataset size suit logistic regression.",
+                "Training pipeline will fit scaling inside each training fold when required."
+              ],
+              "signals": {
+                "row_count": 30,
+                "feature_count": 4,
+                "numeric_feature_count": 2,
+                "categorical_origin_feature_count": 2,
+                "numeric_feature_ratio": 0.5,
+                "categorical_origin_feature_ratio": 0.5,
+                "identifier_candidate_count": 1,
+                "strong_correlation_count": 0,
+                "high_dimensional": false,
+                "large_dataset": false,
+                "moderate_dataset": false,
+                "possible_non_linear_structure": true,
+                "class_imbalance_ratio": 1.0,
+                "scaling_completed": false,
+                "prepared_rows": 30,
+                "problem_type": "classification"
+              },
+              "estimated_complexity": "low",
+              "available": true
+            },
+            {
+              "model_id": "random_forest_classifier",
+              "label": "Random Forest Classifier",
+              "score": 0.6,
+              "rank": 2,
+              "decision": "recommended",
+              "reasons": [
+                "Classification task with 30 rows and 4 candidate features.",
+                "Structured feature signals make a non-linear model family useful to evaluate."
+              ],
+              "signals": {
+                "row_count": 30,
+                "feature_count": 4,
+                "numeric_feature_count": 2,
+                "categorical_origin_feature_count": 2,
+                "numeric_feature_ratio": 0.5,
+                "categorical_origin_feature_ratio": 0.5,
+                "identifier_candidate_count": 1,
+                "strong_correlation_count": 0,
+                "high_dimensional": false,
+                "large_dataset": false,
+                "moderate_dataset": false,
+                "possible_non_linear_structure": true,
+                "class_imbalance_ratio": 1.0,
+                "scaling_completed": false,
+                "prepared_rows": 30,
+                "problem_type": "classification"
+              },
+              "estimated_complexity": "medium",
+              "available": true
+            },
+            {
+              "model_id": "gradient_boosting_classifier",
+              "label": "Gradient Boosting Classifier",
+              "score": 0.6,
+              "rank": 3,
+              "decision": "recommended",
+              "reasons": [
+                "Classification task with 30 rows and 4 candidate features.",
+                "Structured feature signals make a non-linear model family useful to evaluate."
+              ],
+              "signals": {
+                "row_count": 30,
+                "feature_count": 4,
+                "numeric_feature_count": 2,
+                "categorical_origin_feature_count": 2,
+                "numeric_feature_ratio": 0.5,
+                "categorical_origin_feature_ratio": 0.5,
+                "identifier_candidate_count": 1,
+                "strong_correlation_count": 0,
+                "high_dimensional": false,
+                "large_dataset": false,
+                "moderate_dataset": false,
+                "possible_non_linear_structure": true,
+                "class_imbalance_ratio": 1.0,
+                "scaling_completed": false,
+                "prepared_rows": 30,
+                "problem_type": "classification"
+              },
+              "estimated_complexity": "medium",
+              "available": true
+            },
+            {
+              "model_id": "xgboost_classifier",
+              "label": "XGBoost Classifier",
+              "score": 0.0,
+              "rank": null,
+              "decision": "not_selected",
+              "reasons": [
+                "Unavailable: the optional XGBoost package is not installed."
+              ],
+              "signals": {
+                "availability": "unavailable"
+              },
+              "estimated_complexity": "medium",
+              "available": false
+            }
+          ],
+          "signals": {
+            "row_count": 30,
+            "feature_count": 4,
+            "numeric_feature_count": 2,
+            "categorical_origin_feature_count": 2,
+            "numeric_feature_ratio": 0.5,
+            "categorical_origin_feature_ratio": 0.5,
+            "identifier_candidate_count": 1,
+            "strong_correlation_count": 0,
+            "high_dimensional": false,
+            "large_dataset": false,
+            "moderate_dataset": false,
+            "possible_non_linear_structure": true,
+            "class_imbalance_ratio": 1.0,
+            "scaling_completed": false,
+            "prepared_rows": 30,
+            "problem_type": "classification"
+          },
+          "incompatible_models": [
+            {
+              "model_id": "linear_regression",
+              "label": "Linear Regression",
+              "problem_type": "regression",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for regression, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "ridge_regression",
+              "label": "Ridge Regression",
+              "problem_type": "regression",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for regression, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "random_forest_regressor",
+              "label": "Random Forest Regressor",
+              "problem_type": "regression",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for regression, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "gradient_boosting_regressor",
+              "label": "Gradient Boosting Regressor",
+              "problem_type": "regression",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for regression, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "xgboost_regressor",
+              "label": "XGBoost Regressor",
+              "problem_type": "regression",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for regression, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "kmeans",
+              "label": "K-Means",
+              "problem_type": "clustering",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for clustering, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "dbscan",
+              "label": "DBSCAN",
+              "problem_type": "clustering",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for clustering, not the configured classification task, so AMRA did not score it."
+              ]
+            },
+            {
+              "model_id": "agglomerative_clustering",
+              "label": "Agglomerative Clustering",
+              "problem_type": "clustering",
+              "score": 0.0,
+              "rank": null,
+              "decision": "incompatible",
+              "reasons": [
+                "This model is for clustering, not the configured classification task, so AMRA did not score it."
+              ]
+            }
+          ],
+          "summary": {
+            "models_evaluated": 4,
+            "models_recommended": 3,
+            "top_k": 3,
+            "unavailable_models": [
+              "xgboost_classifier"
+            ]
+          }
+        },
+        "business_output": {
+          "status": "completed",
+          "applicability": "applicable",
+          "explainability": {
+            "method": "linear_coefficients",
+            "global_importance": [
+              {
+                "feature": "plan_basic",
+                "original_feature": "plan",
+                "importance": 0.60053024,
+                "direction": "positive",
+                "rank": 1
+              },
+              {
+                "feature": "monthly_spend",
+                "original_feature": "monthly_spend",
+                "importance": 0.42431448,
+                "direction": "positive",
+                "rank": 2
+              },
+              {
+                "feature": "plan_standard",
+                "original_feature": "plan",
+                "importance": 0.41400956,
+                "direction": "negative",
+                "rank": 3
+              },
+              {
+                "feature": "plan_premium",
+                "original_feature": "plan",
+                "importance": 0.18648025,
+                "direction": "negative",
+                "rank": 4
+              },
+              {
+                "feature": "age",
+                "original_feature": "age",
+                "importance": 0.02645649,
+                "direction": "negative",
+                "rank": 5
+              }
+            ],
+            "local_explanation": {
+              "row_index": 0,
+              "prediction": "yes",
+              "baseline_value": 0.0350219,
+              "prediction_probability": 0.52833816,
+              "probabilities_by_class": {
+                "no": 0.47166184,
+                "yes": 0.52833816
+              },
+              "method": "linear_coefficients",
+              "feature_contributions": [
+                {
+                  "feature": "plan_basic",
+                  "original_feature": "plan",
+                  "importance": 0.60053024,
+                  "contribution": 0.60053024,
+                  "direction": "positive",
+                  "rank": 1
+                },
+                {
+                  "feature": "monthly_spend",
+                  "original_feature": "monthly_spend",
+                  "importance": 0.56463037,
+                  "contribution": -0.56463037,
+                  "direction": "negative",
+                  "rank": 2
+                },
+                {
+                  "feature": "age",
+                  "original_feature": "age",
+                  "importance": 0.04255246,
+                  "contribution": 0.04255246,
+                  "direction": "positive",
+                  "rank": 3
+                },
+                {
+                  "feature": "plan_premium",
+                  "original_feature": "plan",
+                  "importance": 0.0,
+                  "contribution": -0.0,
+                  "direction": "neutral",
+                  "rank": 4
+                },
+                {
+                  "feature": "plan_standard",
+                  "original_feature": "plan",
+                  "importance": 0.0,
+                  "contribution": -0.0,
+                  "direction": "neutral",
+                  "rank": 5
+                }
+              ],
+              "top_positive_factors": [
+                {
+                  "feature": "plan_basic",
+                  "original_feature": "plan",
+                  "importance": 0.60053024,
+                  "contribution": 0.60053024,
+                  "direction": "positive",
+                  "rank": 1
+                },
+                {
+                  "feature": "age",
+                  "original_feature": "age",
+                  "importance": 0.04255246,
+                  "contribution": 0.04255246,
+                  "direction": "positive",
+                  "rank": 3
+                }
+              ],
+              "top_negative_factors": [
+                {
+                  "feature": "monthly_spend",
+                  "original_feature": "monthly_spend",
+                  "importance": 0.56463037,
+                  "contribution": -0.56463037,
+                  "direction": "negative",
+                  "rank": 2
+                }
+              ]
+            }
+          },
+          "cips": {
+            "risk_direction": "positive_risk_probability",
+            "signal_mapping": [
+              {
+                "signal": "business_value",
+                "source_column": "monthly_spend"
+              }
+            ],
+            "effective_weights": {
+              "risk": 0.6428571428571429,
+              "business_value": 0.35714285714285715
+            },
+            "summary": {
+              "entities_scored": 30,
+              "immediate_count": 2,
+              "high_count": 3,
+              "medium_count": 13,
+              "monitor_count": 12
+            },
+            "top_entities": [
+              {
+                "row_index": 6,
+                "entity_id": "customer-06",
+                "prediction": "yes",
+                "risk_probability": 0.78725904,
+                "cips_score": 86.323795,
+                "priority_level": "immediate",
+                "signals": {
+                  "risk": 0.78725904,
+                  "business_value": 1.0
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Immediate review/intervention recommended."
+              },
+              {
+                "row_index": 27,
+                "entity_id": "customer-27",
+                "prediction": "yes",
+                "risk_probability": 0.78101123,
+                "cips_score": 85.92215,
+                "priority_level": "immediate",
+                "signals": {
+                  "risk": 0.78101123,
+                  "business_value": 1.0
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Immediate review/intervention recommended."
+              },
+              {
+                "row_index": 12,
+                "entity_id": "customer-12",
+                "prediction": "yes",
+                "risk_probability": 0.74388291,
+                "cips_score": 77.582949,
+                "priority_level": "high",
+                "signals": {
+                  "risk": 0.74388291,
+                  "business_value": 0.83333333
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Prioritize for proactive outreach."
+              },
+              {
+                "row_index": 13,
+                "entity_id": "customer-13",
+                "prediction": "yes",
+                "risk_probability": 0.61737151,
+                "cips_score": 75.402454,
+                "priority_level": "high",
+                "signals": {
+                  "risk": 0.61737151,
+                  "business_value": 1.0
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Prioritize for proactive outreach."
+              },
+              {
+                "row_index": 20,
+                "entity_id": "customer-20",
+                "prediction": "yes",
+                "risk_probability": 0.5744656,
+                "cips_score": 72.644217,
+                "priority_level": "high",
+                "signals": {
+                  "risk": 0.5744656,
+                  "business_value": 1.0
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Prioritize for proactive outreach."
+              },
+              {
+                "row_index": 18,
+                "entity_id": "customer-18",
+                "prediction": "yes",
+                "risk_probability": 0.71428725,
+                "cips_score": 69.72799,
+                "priority_level": "medium",
+                "signals": {
+                  "risk": 0.71428725,
+                  "business_value": 0.66666667
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Monitor and consider targeted engagement."
+              },
+              {
+                "row_index": 19,
+                "entity_id": "customer-19",
+                "prediction": "yes",
+                "risk_probability": 0.58138359,
+                "cips_score": 67.136564,
+                "priority_level": "medium",
+                "signals": {
+                  "risk": 0.58138359,
+                  "business_value": 0.83333333
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Monitor and consider targeted engagement."
+              },
+              {
+                "row_index": 5,
+                "entity_id": "customer-05",
+                "prediction": "yes",
+                "risk_probability": 0.52367585,
+                "cips_score": 63.426781,
+                "priority_level": "medium",
+                "signals": {
+                  "risk": 0.52367585,
+                  "business_value": 0.83333333
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Monitor and consider targeted engagement."
+              },
+              {
+                "row_index": 26,
+                "entity_id": "customer-26",
+                "prediction": "yes",
+                "risk_probability": 0.51446129,
+                "cips_score": 62.834416,
+                "priority_level": "medium",
+                "signals": {
+                  "risk": 0.51446129,
+                  "business_value": 0.83333333
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Monitor and consider targeted engagement."
+              },
+              {
+                "row_index": 3,
+                "entity_id": "customer-03",
+                "prediction": "yes",
+                "risk_probability": 0.67061726,
+                "cips_score": 60.968252,
+                "priority_level": "medium",
+                "signals": {
+                  "risk": 0.67061726,
+                  "business_value": 0.5
+                },
+                "effective_weights": {
+                  "risk": 0.6428571428571429,
+                  "business_value": 0.35714285714285715
+                },
+                "top_reasons": [
+                  "High predicted risk",
+                  "High business value"
+                ],
+                "recommended_action": "Monitor and consider targeted engagement."
+              }
+            ]
+          },
+          "warnings": []
+        },
+        "preparation": {
+          "input_rows": 30,
+          "output_rows": 30,
+          "duplicates_removed": 0,
+          "duplicate_handling_executed": false
+        },
+        "acsa_decisions": {
+          "total_capabilities": 15,
+          "run_count": 2,
+          "optional_count": 2,
+          "skip_count": 11
+        },
+        "awga_node_count": 6,
+        "pruned_modules": 1,
+        "executed_modules": 2,
+        "amra_candidates": 4,
+        "amra_selected_models": 3,
+        "trained_models": 3,
+        "run_index": 1
+      }
+    ]
+  },
+  "warnings": [
+    "Repeated timing is descriptive and may be affected by operating-system filesystem caching."
+  ]
+}

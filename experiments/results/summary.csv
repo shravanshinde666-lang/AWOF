@@ -1,0 +1,14 @@
+experiment_id,dataset_name,problem_type,baseline_modules,awof_modules,baseline_models,awof_models,baseline_time_ms,awof_time_ms,baseline_memory_mb,awof_memory_mb,primary_metric,baseline_primary_metric,awof_primary_metric
+8b3409c1-a3b6-4db9-b413-78f2d7894164,phase_8.csv,classification,4,2,3,3,7427.685,7077.401,0.77904,0.76723,f1,0.0,0.0
+0eb1ea95-d9aa-485a-9191-60b3938f43e5,phase_8.csv,classification,4,2,3,3,6485.48,6382.829,0.721139,0.769697,f1,0.0,0.0
+c0da7fc3-0314-41dc-89e0-fd26c9d2923f,phase_8.csv,classification,4,2,3,3,6294.359,6485.187,0.768523,0.770907,f1,0.0,0.0
+7f5b2848-91e3-4352-a144-ca821a3f9bda,phase_8.csv,classification,4,2,3,3,6222.741,6461.199,0.736312,0.76128,f1,0.0,0.0
+c7718a68-b213-4d65-8a83-f8b172616beb,phase_8.csv,classification,4,2,3,3,7109.949,17376.724,0.754231,0.768458,f1,0.0,0.0
+7a1b8949-5aa3-4081-97c3-11af1e9c1e75,phase_8.csv,classification,4,2,3,3,7010.391,6691.152,0.751333,0.767651,f1,0.0,0.0
+ea1f9c25-3291-4552-aa6a-55c2f8bb67f5,phase_8.csv,classification,4,2,3,3,22902.393,22073.236,0.82708,0.782393,f1,0.0,0.0
+f1f4b71c-3f2d-4019-aec6-48cfaa74cf7c,phase_8.csv,classification,4,2,3,3,22230.508,20661.988,1.911654,0.78303,f1,0.0,0.0
+66dd8a66-ce5e-425b-b944-4d57007d3150,phase_8.csv,classification,4,2,3,3,18111.751,16636.004,0.748345,0.773996,f1,0.0,0.0
+4a200b29-eb07-4b29-93f9-1512cab4400e,audit_classification.csv,classification,4,3,3,3,20818.983,12341.281,0.757493,0.761226,f1,0.142857,0.142857
+9f7f17ae-f130-49e9-a2d1-a108dc627bbc,audit_classification.csv,classification,4,3,3,3,10599.665,10255.681,0.757458,0.762483,f1,0.142857,0.142857
+38b756b9-0022-4daa-8118-440cf17dabc9,audit_classification.csv,classification,4,3,3,3,10160.871,9904.884,0.761846,0.761739,f1,0.142857,0.142857
+7a021ed7-7d27-4e4b-83d9-b495b08dfaee,phase_8.csv,classification,4,2,3,3,11251.977,16538.785,0.758158,0.769223,f1,0.0,0.0

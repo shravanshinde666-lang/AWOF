@@ -1,0 +1,2 @@
+import type { WorkflowNode } from "../../types/workflow";
+export default function NodeDetails({node}:{node:WorkflowNode|null}) { if(!node)return <p>Select a workflow node for details.</p>;return <section className="node-details"><h3>{node.label}</h3><p>Category: {node.category}</p><p>Capability: {node.capability_id??"Core workflow node"}</p><p>Reason: {node.reason}</p><p>Dependencies: {node.dependencies.join(", ")||"None"}</p></section>; }

@@ -1,0 +1,112 @@
+AWOF means Adaptive Workflow Optimization Framework.
+It is a web application that takes a dataset and automatically creates a suitable machine-learning workflow based on the dataset’s structure and your business objective.
+Main flow:
+Upload Dataset
+→ Profile Dataset
+→ Choose Business Objective and Target
+→ ACSA Capability Analysis
+→ AWGA Workflow Generation
+→ Workflow Pruning
+→ Execute Preparation Steps
+→ AMRA Model Recommendation
+→ Train Models
+→ Evaluate Best Model
+→ Explain Predictions
+→ CIPS Business Priorities
+→ Research Comparison
+What each stage does:
+- Upload: Accepts CSV, XLSX, and XLS datasets.
+- Profile: Detects column types, missing values, duplicates, outliers, distributions, correlations, and possible ID columns.
+- Configure: You choose the objective, such as retention, risk, revenue, or customer segmentation, and select a target column when needed.
+- ACSA: Adaptive Capability Scoring Algorithm decides which analysis/preprocessing capabilities are useful, optional, or should be skipped.
+- AWGA: Adaptive Workflow Generation Algorithm creates a dataset-specific workflow graph.
+- Pruning: Removes unnecessary workflow nodes and preserves the reason each was removed.
+- Execution: Applies appropriate safe preparation steps, such as missing-value handling, encoding, scaling, filtering, PCA, and temporal preparation.
+- AMRA: Adaptive Model Recommendation Algorithm recommends suitable models for classification, regression, or clustering.
+- Training: Trains the recommended models using leakage-safe pipelines.
+- Evaluation: Compares model performance and saves the best fitted pipeline as a model artifact.
+- Explainability: Explains global feature importance and individual predictions. It uses SHAP when available, otherwise transparent native, coefficient, or permutation methods.
+- CIPS: Customer Intervention Priority Score combines prediction risk with detected business signals such as value, engagement, support activity, or recency. It ranks entities from monitor to immediate priority.
+- Research Comparison: Compares the adaptive AWOF workflow against a fixed baseline workflow and saves metrics, reports, and charts.
+Technology used:
+- Frontend: React, TypeScript, Vite
+- Backend: FastAPI, Python
+- Data/ML: Pandas, NumPy, Scikit-learn
+- Database: PostgreSQL in production; SQLite fallback for local development/testing
+- Persistence: SQLAlchemy and Alembic migrations
+- Deployment: Docker Compose with frontend, backend, and PostgreSQL services
+Important stored data:
+- Dataset metadata and stage results are persisted in the database.
+- Uploaded files are stored in storage/uploads/.
+- Best trained models are stored in storage/models/.
+- Research metrics, reports, and charts are stored in experiments/results/.
+The frontend provides pages for each workflow step, including dataset intelligence, configuration, workflow visualization, execution, model selection, evaluation, explainability, business priorities, and research comparison.
+
+
+3:21 PM
+
+Your AWOF project implements many parts of this Data Science syllabus in a real application.
+Unit	Syllabus topic	Implemented in AWOF	Why it is used
+I	Data science, populations/samples, modelling, probability, overfitting	Train/test split, model evaluation, leakage-safe pipelines, model comparison	To train models honestly and reduce overfitting
+II	Data types, attributes, mean, median, mode, variance, standard deviation, IQR	Dataset profiler detects numeric/categorical columns; produces descriptive statistics, missing values, outliers, distributions	To understand dataset quality before ML
+III	Data cleaning, outliers, scaling, transformation, feature selection	Workflow execution supports duplicate handling, missing values, IQR outlier reporting, encoding, scaling, PCA, feature selection	To prepare data before training
+IV	NumPy, arrays, matrices, Pandas, indexing, slicing, PCA, lists/dictionaries	Pandas DataFrames are used for loading/profile/preparation; NumPy and scikit-learn pipelines support arrays, matrices, PCA	These are the core tools for tabular data processing
+V	Pandas, EDA, correlation, feature engineering, cross-validation, accuracy/precision/recall	Dataset Intelligence page, correlation analysis, feature encoding/scaling, model training, confusion matrix and classification metrics	To explore patterns and measure model quality
+VI	Charts, graphs, linear regression, multiple regression	Histograms, correlation/distribution charts, workflow graph, research charts; Linear Regression and Ridge Regression models	To visualize data and predict numeric targets such as revenue
+
+
+Additional advanced parts implemented beyond the syllabus:
+- ACSA: decides which capabilities are useful for the dataset.
+- AWGA: generates an adaptive workflow graph.
+- Workflow pruning: removes unnecessary processing steps with reasons.
+- AMRA: recommends suitable ML models.
+- Explainability: shows important features and reasons behind predictions.
+- CIPS: ranks customers/entities by business priority.
+- PostgreSQL persistence: saves projects, results, model metadata, and history.
+- Research comparison: compares AWOF against a fixed baseline workflow.
+- Docker setup: supports frontend, backend, and PostgreSQL deployment.
+Why these are implemented: the syllabus teaches individual concepts. AWOF connects them into one complete real-world pipeline: upload data, understand it, clean it, train models, evaluate them, explain results, and produce business decisions.
+
+
+3:28 PM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Approve for me
+
+Select effortGPT-5.6 TerraMediumNoneMinimalLightMediumHighExtra HighMaxUltraPersistent
+    IDE context
+
+
+
+
+
+
+
+
+
+
+
+Work locallyLocal

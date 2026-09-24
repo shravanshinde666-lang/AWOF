@@ -1,0 +1,5 @@
+experiment_id,dataset_name,problem_type,baseline_modules,awof_modules,baseline_models,awof_models,baseline_time_ms,awof_time_ms,baseline_memory_mb,awof_memory_mb,primary_metric,baseline_primary_metric,awof_primary_metric
+60d0e16e-8c3c-4ecb-b1bd-2209724a3346,phase_8.csv,classification,4,2,3,3,9316.531,8459.098,0.73754,0.773006,f1,0.0,0.0
+60a10e61-9f2c-432d-8cb7-112a9a83c1fa,phase_8.csv,classification,4,2,3,3,6327.016,6306.397,0.737803,0.768605,f1,0.0,0.0
+352f9578-b016-4539-94cd-f1ebe7f91816,phase_8.csv,classification,4,2,3,3,6535.712,6386.322,0.738909,0.770507,f1,0.0,0.0
+a218c0f0-79c7-4666-ae6a-34ba279c75e1,phase_8.csv,classification,4,2,3,3,7899.748,6995.615,0.737569,0.769669,f1,0.0,0.0
