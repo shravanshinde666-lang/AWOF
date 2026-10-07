@@ -27,3 +27,10 @@ storage/uploads/*
 storage/models/*
 !storage/models/.gitkeep
 storage/*.db
+storage/charts/*
+!storage/charts/.gitkeep
+
+# Generated research runs (existing checked-in fixtures remain tracked)
+experiments/results/charts/*/
+experiments/results/metrics/*.json
+experiments/results/reports/*.md

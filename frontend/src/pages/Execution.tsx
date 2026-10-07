@@ -1,25 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { executeWorkflow, getExecution } from "../services/executionService";
 import { recommendModels } from "../services/modelService";
 
-type Result = { summary: { initial_rows: number; final_rows: number; initial_columns: number; final_columns: number; executed_nodes: number; pruned_nodes: number; total_duration_ms: number }; node_results: Array<{ node_id: string; status: string; duration_ms: number }> };
-
-export default function Execution() {
-  const { datasetId } = useParams<{ datasetId: string }>();
-  const navigate = useNavigate();
-  const [result, setResult] = useState<Result | null>(null);
-  const [recommendationError, setRecommendationError] = useState<string | null>(null);
-  const [recommending, setRecommending] = useState(false);
-
-  useEffect(() => { if (datasetId) void getExecution(datasetId).catch(() => executeWorkflow(datasetId)).then(setResult); }, [datasetId]);
-  async function recommend() {
-    if (!datasetId) return;
-    setRecommending(true); setRecommendationError(null);
-    try { await recommendModels(datasetId); navigate(`/datasets/${datasetId}/models`); }
-    catch { setRecommendationError("Model recommendations could not be generated."); }
-    finally { setRecommending(false); }
-  }
-  return <main className="page"><h1>Workflow Execution</h1>{result && <><p>Rows: {result.summary.initial_rows} → {result.summary.final_rows}; Features: {result.summary.initial_columns} → {result.summary.final_columns}</p><p>Executed: {result.summary.executed_nodes}; Pruned: {result.summary.pruned_nodes}; Duration: {result.summary.total_duration_ms} ms</p><ol>{result.node_results.map((node) => <li key={node.node_id}>{node.node_id}: {node.status} ({node.duration_ms} ms)</li>)}</ol><button type="button" onClick={recommend} disabled={recommending}>{recommending ? "Running AMRA..." : "Recommend Models"}</button>{recommendationError && <p className="error-message">{recommendationError}</p>}</>}</main>;
-}
+type NodeResult={node_id:string;status:string;duration_ms:number;rows_before?:number;rows_after?:number;columns_before?:number;columns_after?:number;details?:Record<string,unknown>};
+type Result={summary:{initial_rows:number;final_rows:number;initial_columns:number;final_columns:number;executed_nodes:number;pruned_nodes:number;skipped_nodes?:number;deferred_nodes?:number;failed_nodes?:number;total_duration_ms:number};node_results:NodeResult[]};
+const duration=(ms:number)=>ms<1000?`${ms.toFixed(ms<1?3:1)} ms`:ms<60000?`${(ms/1000).toFixed(1)} s`:`${Math.floor(ms/60000)}m ${((ms%60000)/1000).toFixed(1)}s`;
+export default function Execution(){const{datasetId}=useParams<{datasetId:string}>();const navigate=useNavigate();const[result,setResult]=useState<Result|null>(null);const[error,setError]=useState<string|null>(null);const[recommending,setRecommending]=useState(false);useEffect(()=>{if(datasetId)void getExecution(datasetId).catch(()=>executeWorkflow(datasetId)).then(setResult).catch(()=>setError("Workflow execution failed."));},[datasetId]);async function recommend(){if(!datasetId)return;setRecommending(true);try{await recommendModels(datasetId);navigate(`/datasets/${datasetId}/models`);}catch{setError("Model recommendations could not be generated.");}finally{setRecommending(false);}}
+return <main className="page execution-page"><header className="page-hero"><p className="eyebrow">STAGE 05 · EXECUTION</p><h1>Workflow Execution</h1><p>Transformation audit for the working copy. Downstream ML and business stages are explicitly marked as deferred.</p></header>{error&&<p className="error-message">{error}</p>}{result&&<><section className="stage-kpis"><article><span>Rows</span><strong>{result.summary.initial_rows} → {result.summary.final_rows}</strong><small>Before and after</small></article><article><span>Columns</span><strong>{result.summary.initial_columns} → {result.summary.final_columns}</strong><small>Before and after</small></article><article><span>Completed</span><strong>{result.summary.executed_nodes}</strong><small>{result.summary.pruned_nodes} pruned</small></article><article><span>Deferred</span><strong>{result.summary.deferred_nodes??0}</strong><small>{result.summary.failed_nodes??0} failed</small></article><article><span>Duration</span><strong>{duration(result.summary.total_duration_ms)}</strong><small>Total execution time</small></article></section><section className="card"><div className="section-heading"><div><p className="eyebrow">TRANSFORMATION LOG</p><h2>Execution timeline</h2></div></div><ol className="execution-timeline">{result.node_results.map((node,index)=><li key={node.node_id} className={node.status.toLowerCase()}><span>{index+1}</span><div><strong>{node.node_id.replaceAll("_"," ")}</strong><small>{node.status.toUpperCase()} · {duration(node.duration_ms)}</small>{node.details&&Object.keys(node.details).length>0&&<p>{String(node.details.reason??Object.entries(node.details).map(([key,value])=>`${key.replaceAll("_"," ")}: ${String(value)}`).join(" · "))}</p>}</div></li>)}</ol></section><button type="button" onClick={recommend} disabled={recommending}>{recommending?"Running AMRA…":"Recommend Models"}</button></>}</main>}

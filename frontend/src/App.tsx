@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import Navbar from "./components/common/Navbar";
+import Sidebar from "./components/common/Sidebar";
 import DatasetIntelligence from "./pages/DatasetIntelligence";
 import ConfigureAnalysis from "./pages/ConfigureAnalysis";
 import CapabilityScores from "./pages/CapabilityScores";
@@ -14,14 +15,17 @@ import BusinessIntelligence from "./pages/BusinessIntelligence";
 import ResearchComparison from "./pages/ResearchComparison";
 import Home from "./pages/Home";
 import UploadDataset from "./pages/UploadDataset";
+import Report from "./pages/Report";
 
 export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
         <div className="app-shell">
-          <Navbar />
-          <Routes>
+          <Sidebar />
+          <div className="app-content">
+            <Navbar />
+            <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<UploadDataset />} />
             <Route path="/datasets/:datasetId/intelligence" element={<DatasetIntelligence />} />
@@ -34,7 +38,9 @@ export default function App() {
             <Route path="/datasets/:datasetId/explainability" element={<Explainability />} />
             <Route path="/datasets/:datasetId/business" element={<BusinessIntelligence />} />
             <Route path="/datasets/:datasetId/research" element={<ResearchComparison />} />
-          </Routes>
+            <Route path="/datasets/:datasetId/report" element={<Report />} />
+            </Routes>
+          </div>
         </div>
       </BrowserRouter>
     </ErrorBoundary>

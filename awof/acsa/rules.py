@@ -32,7 +32,10 @@ def profile_signals(profile: dict[str, Any], configuration: dict[str, Any]) -> d
 def score_rules(profile: dict[str, Any], configuration: dict[str, Any], dataframe: pd.DataFrame | None = None) -> dict[str, tuple[float, dict[str, Any], list[str]]]:
     s = profile_signals(profile, configuration)
     summary, features = s["summary"], max(s["feature_count"], 1)
-    missing = clamp_score(.55 * min(summary["missing_percentage"] / MAX_MISSING_PERCENTAGE, 1) + .25 * min(summary["missing_cells"] / max(summary["total_cells"], 1) * 10, 1) + .20 * min(s["maximum_missing_percentage"] / 100, 1))
+    missing_signal = .55 * min(summary["missing_percentage"] / MAX_MISSING_PERCENTAGE, 1) + .25 * min(summary["missing_cells"] / max(summary["total_cells"], 1) * 10, 1) + .20 * min(s["maximum_missing_percentage"] / 100, 1)
+    # Any observed feature missingness requires an explicit workflow decision,
+    # even when the overall dataset percentage is tiny.
+    missing = clamp_score(max(.40 if summary["missing_cells"] > 0 else 0.0, missing_signal))
     duplicate = clamp_score(min(summary["duplicate_percentage"] / MAX_DUPLICATE_PERCENTAGE, 1))
     outlier_rates = s["outlier_values"]
     outlier = clamp_score((len([v for v in outlier_rates if v > 0]) / max(len(s["numeric"]), 1)) * .55 + (max(outlier_rates, default=0) / MAX_OUTLIER_PERCENTAGE) * .45)

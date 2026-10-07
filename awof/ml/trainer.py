@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -180,8 +181,8 @@ def select_best_model(results: list[dict[str, Any]], problem_type: str) -> dict[
     if not completed:
         return None
     if problem_type == "classification":
-        best = max(completed, key=lambda item: (item["test_metrics"].get("f1") or -1.0, item["test_metrics"].get("roc_auc") or -1.0))
-        reason = "Highest F1 among successfully trained recommended models."
+        best = max(completed, key=lambda item: (item["test_metrics"].get("positive_f1") or item["test_metrics"].get("f1") or -1.0, item["test_metrics"].get("roc_auc") or -1.0))
+        reason = "Highest positive-class F1 among successfully trained recommended models."
     elif problem_type == "regression":
         best = min(completed, key=lambda item: (item["test_metrics"].get("rmse") if item["test_metrics"].get("rmse") is not None else float("inf"), -(item["test_metrics"].get("r2") or -float("inf"))))
         reason = "Lowest RMSE among successfully trained recommended models."
@@ -199,13 +200,16 @@ def train_recommended_models(
     configuration: dict[str, Any],
     recommendation: dict[str, Any],
     profile: dict[str, Any] | None = None,
+    progress_callback: Callable[[str, int, int], None] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Pipeline]]:
     problem_type = configuration["problem_type"]
     target_column = (configuration.get("target") or {}).get("column")
     selected = [item["model_id"] for item in recommendation["models"] if item["decision"] == "recommended" and item.get("available", True)]
     results: list[dict[str, Any]] = []
     pipelines: dict[str, Pipeline] = {}
-    for model_id in selected:
+    for index, model_id in enumerate(selected):
+        if progress_callback:
+            progress_callback(model_id, index, len(selected))
         if problem_type in {"classification", "regression"}:
             if not target_column:
                 result, pipeline = ({"model_id": model_id, "status": "failed", "training_duration_ms": 0.0, "cross_validation_metrics": {}, "test_metrics": {}, "feature_count": 0, "train_rows": 0, "test_rows": 0, "warnings": ["A target column is required for supervised training."]}, None)
@@ -216,6 +220,8 @@ def train_recommended_models(
         results.append(result)
         if pipeline is not None:
             pipelines[model_id] = pipeline
+        if progress_callback:
+            progress_callback(model_id, index + 1, len(selected))
     best_model = select_best_model(results, problem_type)
     comparison = [{"model_id": item["model_id"], "status": item["status"], "metrics": item["test_metrics"]} for item in results]
     return {"problem_type": problem_type, "results": results, "best_model": best_model, "comparison": comparison}, pipelines

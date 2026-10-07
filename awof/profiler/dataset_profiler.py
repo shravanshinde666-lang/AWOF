@@ -21,6 +21,8 @@ from .quality_analyzer import QualityAnalyzer
 from .statistics import calculate_categorical_statistics, calculate_numeric_statistics
 from .type_detector import TypeDetector
 
+PROFILE_VERSION = "2.0-normalized"
+
 
 def correlation_strength(correlation: float) -> str:
     """Classify absolute Pearson correlation; this is not a causal statement."""
@@ -183,6 +185,7 @@ class DatasetProfiler:
         quality["summary"]["columns_with_outliers"] = columns_with_outliers
 
         profile: dict[str, Any] = {
+            "profile_version": PROFILE_VERSION,
             "summary": self._summary(column_types, quality),
             "column_types": column_types,
             "columns": columns,

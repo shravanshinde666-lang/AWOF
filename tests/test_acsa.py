@@ -27,6 +27,7 @@ class ACSATests(unittest.TestCase):
         clean, clean_config = self.profile_and_config(pd.DataFrame({"value": [1, 2, 3], "target": ["a", "b", "a"]}))
         missing, missing_config = self.profile_and_config(pd.DataFrame({"value": [1, None, None, None], "target": ["a", "b", "a", "b"]}))
         self.assertLess(capability(ACSAScorer(clean, clean_config).generate(), "missing_value_handling")["score"], capability(ACSAScorer(missing, missing_config).generate(), "missing_value_handling")["score"])
+        self.assertIn(capability(ACSAScorer(missing, missing_config).generate(), "missing_value_handling")["decision"], {"optional", "run"})
 
     def test_text_and_encoding_signals(self):
         profile, configuration = self.profile_and_config(pd.DataFrame({"notes": ["customer described a detailed account concern today", "customer wrote a lengthy renewal feedback message", "customer shared a detailed service experience note"], "kind": ["x", "y", "x"], "target": ["a", "b", "a"]}))

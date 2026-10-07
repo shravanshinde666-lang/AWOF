@@ -10,6 +10,7 @@ from ...services.dataset_service import (
     load_dataset_dataframe,
     store_profile,
 )
+from ...services.insight_service import get_visual_insights
 
 
 router = APIRouter(prefix="/datasets", tags=["Profiling / Dataset Intelligence"])
@@ -42,5 +43,13 @@ async def retrieve_dataset_profile(
 ) -> DatasetProfile | JSONResponse:
     try:
         return DatasetProfile.model_validate(get_profile(dataset_id))
+    except DatasetNotFoundError as error:
+        return error_response(404, str(error))
+
+
+@router.get("/{dataset_id}/insights", response_model=None)
+async def retrieve_visual_insights(dataset_id: str):
+    try:
+        return get_visual_insights(dataset_id)
     except DatasetNotFoundError as error:
         return error_response(404, str(error))

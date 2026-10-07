@@ -43,4 +43,15 @@ export interface ModelEvaluationResult {
   results: ModelTrainingResult[];
   best_model: { model_id: string; why_selected: string; test_metrics: Record<string, unknown>; artifact_filename?: string; amra_score?: number } | null;
   comparison: Array<{ model_id: string; status: string; metrics: Record<string, unknown> }>;
+  charts?: Record<string, string>;
+}
+
+export interface TrainingJobStatus {
+  dataset_id: string;
+  status: "queued" | "running" | "completed" | "failed";
+  current_model_id: string | null;
+  completed_models: number;
+  total_models: number;
+  message: string;
+  error: string | null;
 }

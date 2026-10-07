@@ -118,7 +118,7 @@ def local_explanation(pipeline: Any, row: pd.DataFrame, problem_type: str, top_n
         response["method"] = "linear_coefficients"
         response["baseline_value"] = round(float(np.ravel(getattr(model, "intercept_", [0]))[0]), 8)
     elif hasattr(model, "feature_importances_"):
-        contributions = transformed * np.asarray(model.feature_importances_)
+        contributions = np.abs(transformed) * np.asarray(model.feature_importances_)
         response["method"] = "native_importance_proxy"
         warnings.append("Local factors are an input-weighted native-importance proxy, not SHAP values.")
     else:
@@ -130,13 +130,14 @@ def local_explanation(pipeline: Any, row: pd.DataFrame, problem_type: str, top_n
         factors.append({
             "feature": names[index], "original_feature": _original_feature(names[index], [str(name) for name in getattr(pipeline, "feature_names_in_", [])]),
             "importance": round(float(abs(contribution)), 8), "contribution": round(float(contribution), 8),
-            "direction": "positive" if contribution > 0 else "negative" if contribution < 0 else "neutral",
+            "direction": None if response["method"] == "native_importance_proxy" else "positive" if contribution > 0 else "negative" if contribution < 0 else "neutral",
         })
     factors.sort(key=lambda item: (-item["importance"], item["feature"]))
     for rank, item in enumerate(factors[:top_n], start=1):
         item["rank"] = rank
     factors = factors[:top_n]
     response["feature_contributions"] = factors
-    response["top_positive_factors"] = [item for item in factors if item["contribution"] > 0][:top_n]
-    response["top_negative_factors"] = [item for item in factors if item["contribution"] < 0][:top_n]
+    signed = response["method"] == "linear_coefficients"
+    response["top_positive_factors"] = [item for item in factors if signed and item["contribution"] > 0][:top_n]
+    response["top_negative_factors"] = [item for item in factors if signed and item["contribution"] < 0][:top_n]
     return response, warnings

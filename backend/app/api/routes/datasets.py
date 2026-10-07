@@ -10,6 +10,7 @@ from ...services.dataset_service import (
     get_dataset_history,
     get_dataset_preview,
     get_dataset_summary,
+    get_final_report,
     ingest_dataset,
     list_datasets,
 )
@@ -63,6 +64,14 @@ async def retrieve_dataset_summary(dataset_id: str) -> dict | JSONResponse:
 async def retrieve_dataset_history(dataset_id: str) -> dict | JSONResponse:
     try:
         return {"dataset_id": dataset_id, "stages": get_dataset_history(dataset_id)}
+    except DatasetNotFoundError as error:
+        return error_response(404, str(error))
+
+
+@router.get("/{dataset_id}/report", response_model=None)
+async def retrieve_final_report(dataset_id: str) -> dict | JSONResponse:
+    try:
+        return get_final_report(dataset_id)
     except DatasetNotFoundError as error:
         return error_response(404, str(error))
 

@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Loading from "../components/common/Loading";
 import VisualDashboard from "../components/dataset/VisualDashboard";
 import { getDataset, type DatasetMetadata } from "../services/datasetService";
-import { getProfile } from "../services/profileService";
+import { getProfile, getVisualInsights, type VisualInsights } from "../services/profileService";
 import type {
   ColumnProfile,
   ColumnTypeInfo,
@@ -441,6 +441,7 @@ export default function DatasetIntelligence() {
   const { datasetId } = useParams<{ datasetId: string }>();
   const [profile, setProfile] = useState<DatasetProfile | null>(null);
   const [dataset, setDataset] = useState<DatasetMetadata | null>(null);
+  const [insights, setInsights] = useState<VisualInsights | null>(null);
   const [activeTab, setActiveTab] = useState<IntelligenceTab>("overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -455,12 +456,14 @@ export default function DatasetIntelligence() {
     setLoading(true);
     setError(null);
     try {
-      const [loadedProfile, loadedDataset] = await Promise.all([
+      const [loadedProfile, loadedDataset, loadedInsights] = await Promise.all([
         getProfile(datasetId),
         getDataset(datasetId).catch(() => null),
+        getVisualInsights(datasetId).catch(() => null),
       ]);
       setProfile(loadedProfile);
       setDataset(loadedDataset);
+      setInsights(loadedInsights);
     } catch (cause) {
       setProfile(null);
       setError(getErrorMessage(cause, "Unable to load this dataset profile."));
@@ -484,7 +487,7 @@ export default function DatasetIntelligence() {
       case "outliers": return <OutliersSection entries={entries} />;
       case "correlations": return <CorrelationsSection profile={profile} />;
       case "distributions": return <DistributionsSection entries={entries} />;
-      default: return <><VisualDashboard profile={profile} dataset={dataset} /><OverviewSection profile={profile} /></>;
+      default: return <><VisualDashboard profile={profile} dataset={dataset} insights={insights} /><OverviewSection profile={profile} /></>;
     }
   })();
 

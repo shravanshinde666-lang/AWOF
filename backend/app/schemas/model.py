@@ -52,3 +52,14 @@ class ModelEvaluationResult(BaseModel):
     results: list[ModelTrainingResult]
     best_model: dict[str, Any] | None
     comparison: list[dict[str, Any]]
+    charts: dict[str, str] = {}
+
+
+class TrainingJobStatus(BaseModel):
+    dataset_id: str
+    status: str
+    current_model_id: str | None = None
+    completed_models: int = 0
+    total_models: int = 0
+    message: str
+    error: str | None = None

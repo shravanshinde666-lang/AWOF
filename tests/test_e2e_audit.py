@@ -80,12 +80,19 @@ class EndToEndAuditTests(TestCase):
         self.assertEqual(Path(artifact).name, artifact)
         artifact_path = BACKEND_DIR.parent / "storage" / "models" / artifact
         self.assertTrue(artifact_path.is_file())
+        insights = self.client.get(f"/api/v1/datasets/{dataset_id}/insights")
+        self.assertEqual(insights.status_code, 200)
+        self.assertEqual(insights.json()["target"], "churn")
+        self.assertTrue(insights.json()["target_distribution"])
         self.assertEqual(self.client.post(f"/api/v1/datasets/{dataset_id}/explain").status_code, 200)
         self.assertEqual(self.client.post(f"/api/v1/datasets/{dataset_id}/business-priority").status_code, 200)
         experiment = self.client.post(f"/api/v1/datasets/{dataset_id}/experiments/compare", json={"runs": 1})
         self.assertEqual(experiment.status_code, 200, experiment.text)
         experiment_id = experiment.json()["experiment_id"]
         self.assertEqual(self.client.get(f"/api/v1/experiments/{experiment_id}").status_code, 200)
+        report = self.client.get(f"/api/v1/datasets/{dataset_id}/report")
+        self.assertEqual(report.status_code, 200)
+        self.assertIsNotNone(report.json()["stages"]["model_evaluation"])
 
         # Replacing the SQLAlchemy engine simulates a new service/session after restart.
         configure_database()

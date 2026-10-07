@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from threading import Lock
 from typing import Any
 
 import joblib
@@ -18,6 +19,7 @@ from .configuration_service import ConfigurationNotFoundError, get_saved_configu
 from .dataset_service import DatasetNotFoundError, load_dataset_dataframe, get_profile
 from .execution_service import get_execution
 from .workflow_service import WorkflowNotFoundError, get_workflow
+from .chart_service import create_evaluation_charts
 
 
 
@@ -27,6 +29,10 @@ class ModelPrerequisiteError(Exception):
 
 class ModelResultNotFoundError(Exception):
     pass
+
+
+_training_lock = Lock()
+_active_training: set[str] = set()
 
 
 def _resolve_inputs(dataset_id: str) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], Any]:
@@ -92,10 +98,57 @@ def _store_prediction_records(dataset_id: str, pipeline: Any, dataframe: Any) ->
     repository.save_stage(dataset_id, "prediction_records", {"records": records})
 
 
-def train_models(dataset_id: str) -> dict[str, Any]:
+def _training_status(dataset_id: str, **updates: Any) -> dict[str, Any]:
+    current = {"dataset_id": dataset_id, "status": "queued", "current_model_id": None, "completed_models": 0, "total_models": 0, "message": "Training is queued.", "error": None}
+    try:
+        current.update(repository.get_stage(dataset_id, "model_training_status"))
+    except repository.PersistenceNotFoundError:
+        pass
+    current.update(updates)
+    repository.save_stage(dataset_id, "model_training_status", current)
+    return current
+
+
+def start_model_training(dataset_id: str) -> dict[str, Any]:
+    recommendation = get_recommendations(dataset_id)
+    selected = [item for item in recommendation["models"] if item["decision"] == "recommended" and item.get("available", True)]
+    with _training_lock:
+        if dataset_id in _active_training:
+            return _training_status(dataset_id, _schedule=False)
+        _active_training.add(dataset_id)
+    return _training_status(dataset_id, status="queued", total_models=len(selected), message="Training job is queued.", _schedule=True)
+
+
+def run_model_training_job(dataset_id: str) -> None:
+    try:
+        train_models(dataset_id, is_background_job=True)
+    except Exception as exc:
+        _training_status(dataset_id, status="failed", message="Model training failed.", error=str(exc))
+    finally:
+        with _training_lock:
+            _active_training.discard(dataset_id)
+
+
+def get_model_training_status(dataset_id: str) -> dict[str, Any]:
+    try:
+        return repository.get_stage(dataset_id, "model_training_status")
+    except repository.PersistenceNotFoundError as exc:
+        raise ModelResultNotFoundError("No model training job has been started.") from exc
+
+
+def train_models(dataset_id: str, is_background_job: bool = False) -> dict[str, Any]:
     recommendation = get_recommendations(dataset_id)
     profile, configuration, _, dataframe = _resolve_inputs(dataset_id)
-    evaluation, pipelines = train_recommended_models(dataframe, configuration, recommendation, profile)
+    selected = [item for item in recommendation["models"] if item["decision"] == "recommended" and item.get("available", True)]
+    if is_background_job:
+        _training_status(dataset_id, status="running", total_models=len(selected), message="Preparing training data.")
+
+    def progress(model_id: str, completed: int, total: int) -> None:
+        if is_background_job:
+            phase = "completed" if completed > 0 else "running"
+            _training_status(dataset_id, status="running", current_model_id=model_id, completed_models=completed, total_models=total, message=f"Training {model_id.replace('_', ' ')}.")
+
+    evaluation, pipelines = train_recommended_models(dataframe, configuration, recommendation, profile, progress)
     evaluation["dataset_id"] = dataset_id
     scores = {item["model_id"]: item["score"] for item in recommendation["models"]}
     for result in evaluation["results"]:
@@ -111,7 +164,10 @@ def train_models(dataset_id: str) -> dict[str, Any]:
                 result["artifact_filename"] = filename
                 break
         _store_prediction_records(dataset_id, pipelines[best["model_id"]], dataframe)
+    evaluation["charts"] = create_evaluation_charts(dataset_id, evaluation)
     repository.save_stage(dataset_id, "model_evaluation", evaluation)
+    if is_background_job:
+        _training_status(dataset_id, status="completed", current_model_id=None, completed_models=len(selected), total_models=len(selected), message="All recommended models have been evaluated.")
     return evaluation
 
 

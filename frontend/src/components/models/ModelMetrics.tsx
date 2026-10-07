@@ -5,7 +5,7 @@ const metric = (value: unknown) => value === null || value === undefined ? "Not 
 export default function ModelMetrics({ result, problemType }: { result: ModelTrainingResult; problemType: ProblemType }) {
   const metrics = result.test_metrics;
   const labels = problemType === "classification"
-    ? [["Accuracy", metrics.accuracy], ["Precision", metrics.precision], ["Recall", metrics.recall], ["F1", metrics.f1], ["ROC-AUC", metrics.roc_auc], ["CV F1", result.cross_validation_metrics.mean]]
+    ? [["Accuracy", metrics.accuracy], ["Positive Precision", metrics.positive_precision], ["Positive Recall", metrics.positive_recall], ["Positive F1", metrics.positive_f1], ["ROC-AUC", metrics.roc_auc], ["Macro F1", metrics.macro_f1], ["Weighted F1", metrics.weighted_f1], ["CV F1", result.cross_validation_metrics.mean]]
     : problemType === "regression"
       ? [["MAE", metrics.mae], ["RMSE", metrics.rmse], ["R²", metrics.r2], ["CV RMSE", result.cross_validation_metrics.mean]]
       : [["Clusters", metrics.cluster_count], ["Silhouette", metrics.silhouette_score], ["Davies-Bouldin", metrics.davies_bouldin_score], ["Calinski-Harabasz", metrics.calinski_harabasz_score], ["Noise %", metrics.noise_percentage]];

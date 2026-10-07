@@ -77,7 +77,7 @@ def load_dataframe(path: Path, extension: str) -> tuple[pd.DataFrame, str | None
         if extension == ".csv":
             for encoding in ("utf-8", "utf-8-sig", "latin-1"):
                 try:
-                    return pd.read_csv(path, encoding=encoding), None
+                    return normalize_dataframe(pd.read_csv(path, encoding=encoding)), None
                 except UnicodeDecodeError:
                     continue
             raise DatasetValidationError("The CSV file could not be parsed.")
@@ -86,12 +86,36 @@ def load_dataframe(path: Path, extension: str) -> tuple[pd.DataFrame, str | None
         with pd.ExcelFile(path, engine="openpyxl" if extension == ".xlsx" else "xlrd") as workbook:
             sheet_name = str(workbook.sheet_names[0])
             dataframe = pd.read_excel(workbook, sheet_name=0)
-        return dataframe, sheet_name
+        return normalize_dataframe(dataframe), sheet_name
     except DatasetValidationError:
         raise
     except (EmptyDataError, ParserError, UnicodeDecodeError, ValueError, OSError) as error:
         label = "CSV" if extension == ".csv" else "Excel"
         raise DatasetValidationError(f"The {label} file could not be parsed.") from error
+
+
+def normalize_dataframe(dataframe: pd.DataFrame) -> pd.DataFrame:
+    """Return a working copy with blank strings normalized and safe numeric coercion.
+
+    Uploaded artifacts are never modified; this normalizes only the in-memory frame
+    used for preview, profiling, and downstream analysis.
+    """
+    result = dataframe.copy(deep=True)
+    for column in result.columns:
+        series = result[column]
+        if not (pd.api.types.is_object_dtype(series) or pd.api.types.is_string_dtype(series)):
+            continue
+        cleaned = series.map(lambda value: value.strip() if isinstance(value, str) else value)
+        cleaned = cleaned.replace(r"^\s*$", pd.NA, regex=True)
+        non_null = cleaned.dropna()
+        if not non_null.empty:
+            numeric = pd.to_numeric(non_null, errors="coerce")
+            if float(numeric.notna().mean()) >= 0.95:
+                converted = pd.to_numeric(cleaned, errors="coerce")
+                result[column] = converted
+                continue
+        result[column] = cleaned
+    return result
 
 
 def _preview(dataframe: pd.DataFrame, limit: int) -> list[dict[str, Any]]:
@@ -166,7 +190,12 @@ def store_profile(dataset_id: str, profile: dict[str, Any]) -> None:
 
 def get_profile(dataset_id: str) -> dict[str, Any]:
     try:
-        return repository.get_stage(dataset_id, "profile")
+        profile = repository.get_stage(dataset_id, "profile")
+        if profile.get("profile_version") != "2.0-normalized":
+            from awof.profiler.dataset_profiler import DatasetProfiler
+            profile = DatasetProfiler(load_dataset_dataframe(dataset_id), dataset_id).generate_profile()
+            repository.save_stage(dataset_id, "profile", profile)
+        return profile
     except repository.PersistenceNotFoundError as exc:
         message = str(exc)
         if message == "Dataset not found":
@@ -188,6 +217,20 @@ def get_dataset_history(dataset_id: str) -> list[dict[str, Any]]:
 def get_dataset_summary(dataset_id: str) -> dict[str, Any]:
     metadata = _metadata(dataset_id)
     return {"dataset": metadata.model_dump(), "stages": get_dataset_history(dataset_id)}
+
+
+def get_final_report(dataset_id: str) -> dict[str, Any]:
+    """Assemble existing persisted results without rerunning any algorithm."""
+    metadata = _metadata(dataset_id)
+    stage_names = ["profile", "configuration", "capabilities", "workflow", "pruned_workflow", "execution", "model_recommendations", "model_evaluation", "explainability", "business_priority"]
+    stages: dict[str, Any] = {}
+    for stage in stage_names:
+        try:
+            stages[stage] = repository.get_stage(dataset_id, stage)
+        except repository.PersistenceNotFoundError:
+            stages[stage] = None
+    experiments = repository.list_experiments(dataset_id)
+    return {"dataset": metadata.model_dump(), "stages": stages, "research": experiments[0] if experiments else None, "limitations": ["Results describe the uploaded dataset and configured split only.", "Adaptive scores are decision-support heuristics, not guarantees of business outcomes."]}
 
 
 def delete_dataset(dataset_id: str) -> None:

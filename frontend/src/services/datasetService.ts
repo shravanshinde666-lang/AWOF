@@ -29,3 +29,6 @@ export async function getDataset(datasetId: string): Promise<DatasetMetadata> {
 export async function getDatasetPreview(datasetId: string, limit = 10): Promise<DatasetPreviewResponse> {
   return (await api.get<DatasetPreviewResponse>(`/datasets/${datasetId}/preview`, { params: { limit } })).data;
 }
+export const listDatasets = () => api.get<DatasetMetadata[]>("/datasets").then(response => response.data);
+export const getDatasetSummary = (datasetId:string) => api.get<{dataset:DatasetMetadata;stages:Array<{stage:string;updated_at:string}>}>(`/datasets/${datasetId}/summary`).then(response=>response.data);
+export const getFinalReport = (datasetId:string) => api.get<{dataset:DatasetMetadata;stages:Record<string,unknown>;research:unknown;limitations:string[]}>(`/datasets/${datasetId}/report`).then(response=>response.data);

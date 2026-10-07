@@ -4,10 +4,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from .api.router import api_router
 from .api.routes import health
-from .config.settings import settings
+from .config.settings import BACKEND_DIR, settings
 from .database import database_healthy, init_database
 
 
@@ -42,6 +43,7 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(api_router, prefix=settings.API_PREFIX)
+app.mount("/artifacts", StaticFiles(directory=BACKEND_DIR.parent / "storage"), name="artifacts")
 
 
 @app.exception_handler(Exception)

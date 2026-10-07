@@ -34,6 +34,7 @@ class ColumnTypeInfo(BaseModel):
 
 class DatasetProfile(BaseModel):
     dataset_id: str
+    profile_version: str | None = None
     summary: DatasetSummary
     column_types: list[ColumnTypeInfo]
     columns: dict[str, dict[str, Any]]

@@ -318,6 +318,7 @@ export default function ResearchComparison() {
       <Link className="back-link" to={`/datasets/${datasetId}/business`}>Back to business intelligence</Link>
       <h1>Research Comparison</h1>
       <p>Compare a fixed, conventional pipeline with AWOF using the same configured dataset and deterministic split policy.</p>
+      <Link className="primary-link" to={`/datasets/${datasetId}/report`}>Open Final Report</Link>
 
       <section className="card">
         <h2>Run Fixed vs AWOF Experiment</h2>

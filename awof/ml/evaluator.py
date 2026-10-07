@@ -27,6 +27,9 @@ def _rounded(value: float | np.floating[Any] | None) -> float | None:
 
 def classification_metrics(y_true: Any, predictions: Any, probabilities: Any | None = None) -> tuple[dict[str, Any], list[str]]:
     warnings: list[str] = []
+    labels = list(np.unique(y_true))
+    positive = next((item for item in labels if str(item).strip().casefold() in {"yes", "true", "churn", "positive", "1"}), labels[-1] if labels else None)
+    binary = len(labels) == 2
     metrics: dict[str, Any] = {
         "accuracy": _rounded(accuracy_score(y_true, predictions)),
         "precision": _rounded(precision_score(y_true, predictions, average="weighted", zero_division=0)),
@@ -35,15 +38,21 @@ def classification_metrics(y_true: Any, predictions: Any, probabilities: Any | N
         "confusion_matrix": confusion_matrix(y_true, predictions).tolist(),
         "roc_auc": None,
         "roc_auc_explanation": None,
+        "positive_class": str(positive) if binary else None,
+        "positive_precision": _rounded(precision_score(y_true, predictions, pos_label=positive, zero_division=0)) if binary else None,
+        "positive_recall": _rounded(recall_score(y_true, predictions, pos_label=positive, zero_division=0)) if binary else None,
+        "positive_f1": _rounded(f1_score(y_true, predictions, pos_label=positive, zero_division=0)) if binary else None,
+        "macro_f1": _rounded(f1_score(y_true, predictions, average="macro", zero_division=0)),
+        "weighted_f1": _rounded(f1_score(y_true, predictions, average="weighted", zero_division=0)),
     }
     if probabilities is None:
         metrics["roc_auc_explanation"] = "The selected model does not provide probability estimates."
         return metrics, warnings
     try:
-        labels = np.unique(y_true)
         if len(labels) < 2:
             raise ValueError("ROC-AUC requires at least two test classes.")
         if len(labels) == 2:
+            positive_index = list(getattr(probabilities, "classes_", []))
             metrics["roc_auc"] = _rounded(roc_auc_score(y_true, probabilities[:, 1]))
         else:
             metrics["roc_auc"] = _rounded(roc_auc_score(y_true, probabilities, multi_class="ovr", average="weighted"))

@@ -14,3 +14,5 @@ export async function generateProfile(datasetId: string): Promise<DatasetProfile
 export async function getProfile(datasetId: string): Promise<DatasetProfile> {
   return (await api.get<DatasetProfile>(profilePath(datasetId))).data;
 }
+export interface VisualInsights {target:string|null;problem_type:string|null;positive_class:string|null;target_distribution:Array<{label:string;count:number;percentage:number}>;category_target_rates:Array<{feature:string;values:Array<{category:string;rate:number;count:number}>}>;correlation_matrix:{columns:string[];values:Array<Array<number|null>>}|null}
+export const getVisualInsights=(datasetId:string)=>api.get<VisualInsights>(`/datasets/${encodeURIComponent(datasetId)}/insights`).then(response=>response.data);

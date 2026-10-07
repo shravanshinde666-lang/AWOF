@@ -1,40 +1,4 @@
-import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { generateCapabilities, getCapabilities } from "../services/capabilityService";
-import type { ACSAResult, CapabilityResult } from "../types/capability";
-import Loading from "../components/common/Loading";
-import { useNavigate } from "react-router-dom";
-
-function message(cause: unknown) {
-  return cause instanceof AxiosError ? ((cause.response?.data as { error?: string } | undefined)?.error ?? "Capability analysis failed.") : "Capability analysis failed.";
-}
-function group(capabilities: CapabilityResult[]) {
-  return capabilities.reduce<Record<string, CapabilityResult[]>>((groups, item) => {
-    (groups[item.category] ??= []).push(item); return groups;
-  }, {});
-}
-export default function CapabilityScores() {
-  const navigate=useNavigate();
-  const { datasetId } = useParams<{ datasetId: string }>();
-  const [result, setResult] = useState<ACSAResult | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    if (!datasetId) return;
-    getCapabilities(datasetId).then(setResult).catch(() => generateCapabilities(datasetId).then(setResult)).catch((cause) => setError(message(cause))).finally(() => setLoading(false));
-  }, [datasetId]);
-  if (loading) return <main className="page"><Loading message="Running capability analysis..." /></main>;
-  if (error || !result) return <main className="page"><p className="error-message">{error ?? "No capability result is available."}</p></main>;
-  return <main className="page capability-page">
-    <Link className="back-link" to={`/datasets/${datasetId}/configure`}>← Configure Analysis</Link>
-    <p className="eyebrow">AWOF · {result.algorithm_version}</p><h1>ACSA Capability Analysis</h1>
-    <p>{result.summary.total_capabilities} capabilities evaluated · RUN: {result.summary.run_count} · OPTIONAL: {result.summary.optional_count} · SKIP: {result.summary.skip_count}</p>
-    <button type="button" onClick={()=>datasetId&&navigate(`/datasets/${datasetId}/workflow`)}>Generate Adaptive Workflow</button>
-    {Object.entries(group(result.capabilities)).map(([category, items]) => <section key={category}><h2>{category.replaceAll("_", " ")}</h2><div className="capability-grid">{items.map((item) => <article className="capability-card" key={item.id}>
-      <h3>{item.label}</h3><p>{item.description}</p><p><strong>Score: {(item.score * 100).toFixed(0)}%</strong> · <span className={`decision ${item.decision}`}>{item.decision.toUpperCase()}</span></p>
-      <div className="capability-bar"><span style={{ width: `${item.score * 100}%` }} /></div><h4>Why</h4><ul>{item.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
-      <details><summary>Signals</summary><ul>{Object.entries(item.signals).map(([key, value]) => <li key={key}>{key.replaceAll("_", " ")}: {value == null ? "—" : String(value)}</li>)}</ul></details>
-    </article>)}</div></section>)}
-  </main>;
-}
+import { AxiosError } from "axios";import{useEffect,useMemo,useState}from"react";import{Link,useNavigate,useParams}from"react-router-dom";import Loading from"../components/common/Loading";import{generateCapabilities,getCapabilities}from"../services/capabilityService";import type{ACSAResult,CapabilityResult}from"../types/capability";
+const message=(cause:unknown)=>cause instanceof AxiosError?((cause.response?.data as{error?:string}|undefined)?.error??"Capability analysis failed."):"Capability analysis failed.";
+const group=(items:CapabilityResult[])=>items.reduce<Record<string,CapabilityResult[]>>((groups,item)=>{(groups[item.category]??=[]).push(item);return groups;},{});
+export default function CapabilityScores(){const navigate=useNavigate();const{datasetId}=useParams<{datasetId:string}>();const[result,setResult]=useState<ACSAResult|null>(null);const[loading,setLoading]=useState(true);const[error,setError]=useState<string|null>(null);useEffect(()=>{if(!datasetId)return;getCapabilities(datasetId).then(setResult).catch(()=>generateCapabilities(datasetId).then(setResult)).catch(cause=>setError(message(cause))).finally(()=>setLoading(false));},[datasetId]);const sorted=useMemo(()=>[...(result?.capabilities??[])].sort((a,b)=>b.score-a.score),[result]);if(loading)return <main className="page"><Loading message="Running capability analysis…"/></main>;if(error||!result)return <main className="page"><p className="error-message">{error??"No capability result is available."}</p></main>;const total=Math.max(1,result.summary.total_capabilities);return <main className="page capability-page"><Link className="back-link" to={`/datasets/${datasetId}/configure`}>← Configure Analysis</Link><header className="page-hero"><p className="eyebrow">ACSA · {result.algorithm_version}</p><h1>Capability Analysis</h1><p>Dataset-aware decisions generated from the corrected profile and selected objective.</p></header><section className="stage-kpis"><article><span>Run</span><strong>{result.summary.run_count}</strong><small>Required capabilities</small></article><article><span>Optional</span><strong>{result.summary.optional_count}</strong><small>Context-dependent</small></article><article><span>Skip</span><strong>{result.summary.skip_count}</strong><small>Not applicable</small></article><article><span>Highest score</span><strong>{Math.round((sorted[0]?.score??0)*100)}%</strong><small>{sorted[0]?.label??"None"}</small></article></section><section className="dashboard-grid dashboard-grid-secondary"><article className="dashboard-card"><h2>Decision distribution</h2><div className="decision-donut" style={{background:`conic-gradient(#22a06b 0 ${result.summary.run_count/total*100}%,#e5a11d ${result.summary.run_count/total*100}% ${(result.summary.run_count+result.summary.optional_count)/total*100}%,#aab6c5 0)`}}><span>{total}<small>capabilities</small></span></div></article><article className="dashboard-card"><h2>Capability scores</h2><div className="score-chart">{sorted.map(item=><div key={item.id}><span>{item.label}</span><div><i className={item.decision} style={{width:`${item.score*100}%`}}/></div><b>{Math.round(item.score*100)}%</b></div>)}</div></article></section><button type="button" onClick={()=>datasetId&&navigate(`/datasets/${datasetId}/workflow`)}>Generate Adaptive Workflow</button>{Object.entries(group(result.capabilities)).map(([category,items])=><section key={category}><h2>{category.replaceAll("_"," ")}</h2><div className="capability-grid">{items.map(item=><article className="capability-card" key={item.id}><div className="model-card-head"><h3>{item.label}</h3><span className={`decision ${item.decision}`}>{item.decision.toUpperCase()}</span></div><p>{item.description}</p><p><strong>{Math.round(item.score*100)}%</strong></p><div className="capability-bar"><span className={item.decision} style={{width:`${item.score*100}%`}}/></div><details><summary>Reasons and signals</summary><ul>{item.reasons.map(reason=><li key={reason}>{reason}</li>)}{Object.entries(item.signals).map(([key,value])=><li key={key}><strong>{key.replaceAll("_"," ")}:</strong> {value==null?"—":String(value)}</li>)}</ul></details></article>)}</div></section>)}</main>}

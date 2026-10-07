@@ -34,6 +34,12 @@ class ExplainabilityTests(unittest.TestCase):
         method, items, _ = global_importance(pipeline, self.features, self.target)
         self.assertEqual(method, "native_feature_importance")
         self.assertTrue(items)
+        local, warnings = local_explanation(pipeline, self.features.iloc[[0]], "classification")
+        self.assertEqual(local["method"], "native_importance_proxy")
+        self.assertTrue(all(item["direction"] is None for item in local["feature_contributions"]))
+        self.assertFalse(local["top_positive_factors"])
+        self.assertFalse(local["top_negative_factors"])
+        self.assertTrue(warnings)
 
     def test_regression_explanation_returns_predicted_value_not_probability(self) -> None:
         target = pd.Series([value * 3.0 + 1 for value in range(40)])
