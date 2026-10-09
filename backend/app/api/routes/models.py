@@ -12,6 +12,7 @@ from ...services.model_service import (
     run_model_training_job,
     start_model_training,
     train_models,
+    tune_selected_model,
 )
 
 
@@ -60,3 +61,8 @@ def training_status(dataset_id: str):
 @router.get("/{dataset_id}/models/evaluation", response_model=ModelEvaluationResult)
 async def evaluation(dataset_id: str):
     return _response(lambda: get_evaluation(dataset_id))
+
+
+@router.post("/{dataset_id}/models/tune", response_model=None)
+async def tune(dataset_id: str):
+    return _response(lambda: tune_selected_model(dataset_id))

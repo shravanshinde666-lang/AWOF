@@ -34,6 +34,14 @@ export interface ModelTrainingResult {
   train_rows: number;
   test_rows: number;
   warnings: string[];
+  preprocessing_plan?: {
+    numeric_imputation: string | null;
+    categorical_imputation: string | null;
+    categorical_encoding: string | null;
+    scaling: string | null;
+    outlier_aware_columns: string[];
+    fit_within_training_folds: boolean;
+  };
   artifact_filename?: string;
 }
 

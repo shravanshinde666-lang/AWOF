@@ -23,7 +23,8 @@ type IntelligenceTab =
   | "missing"
   | "outliers"
   | "correlations"
-  | "distributions";
+  | "distributions"
+  | "advanced";
 
 interface ProfileColumnEntry {
   typeInfo: ColumnTypeInfo;
@@ -38,6 +39,7 @@ const tabs: Array<{ id: IntelligenceTab; label: string }> = [
   { id: "outliers", label: "Outliers" },
   { id: "correlations", label: "Correlations" },
   { id: "distributions", label: "Distributions" },
+  { id: "advanced", label: "Advanced EDA" },
 ];
 
 function formatNumber(value: number | null | undefined, maximumFractionDigits = 2): string {
@@ -429,6 +431,57 @@ function DistributionsSection({ entries }: { entries: ProfileColumnEntry[] }) {
   );
 }
 
+function AdvancedEdaSection({ entries, insights, profile }: { entries: ProfileColumnEntry[]; insights: VisualInsights | null; profile: DatasetProfile }) {
+  const numeric = entries
+    .filter(({ profile }) => profile.numeric_statistics !== null)
+    .map(({ typeInfo, profile }) => ({ column: typeInfo.column, statistics: profile.numeric_statistics!, outliers: profile.outliers }));
+  const categorical = entries.filter(({ profile }) => (profile.categorical_statistics?.top_values.length ?? 0) > 0);
+  const missingPatterns = profile.quality.missing_values.patterns;
+
+  const normality = (statistics: NumericStatistics) => {
+    const skewness = statistics.skewness;
+    const kurtosis = statistics.kurtosis;
+    if (skewness == null || kurtosis == null) return "Insufficient data";
+    return Math.abs(skewness) <= 0.5 && Math.abs(kurtosis) <= 1 ? "Approximately symmetric" : "Non-normal / skewed";
+  };
+
+  return (
+    <section className="intelligence-section" aria-labelledby="advanced-eda-heading">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">DATA-AWARE DIAGNOSTICS</p>
+          <h2 id="advanced-eda-heading">Advanced exploratory analysis</h2>
+        </div>
+        <p>Only diagnostics supported by the uploaded dataset are shown.</p>
+      </div>
+
+      {numeric.length > 0 ? <div className="table-scroll"><table>
+        <thead><tr><th>Feature</th><th>Skewness</th><th>Kurtosis</th><th>Shape</th><th>Normality signal</th><th>IQR outliers</th></tr></thead>
+        <tbody>{numeric.map(({ column, statistics, outliers }) => <tr key={column}>
+          <td><code>{column}</code></td><td>{formatNumber(statistics.skewness, 3)}</td><td>{formatNumber(statistics.kurtosis, 3)}</td>
+          <td>{humanize(entries.find((entry) => entry.typeInfo.column === column)?.profile.distribution?.distribution_shape)}</td>
+          <td><span className="type-badge">{normality(statistics)}</span></td><td>{outliers ? `${formatNumber(outliers.outlier_count, 0)} (${formatPercent(outliers.outlier_percentage)})` : "â€”"}</td>
+        </tr>)}</tbody>
+      </table></div> : <p className="empty-state">Not applicable: numerical diagnostics require at least one numerical feature.</p>}
+
+      <div className="advanced-eda-grid">
+        <article><h3>Categorical concentration</h3>{categorical.length ? <ul>{categorical.slice(0, 6).map(({ typeInfo, profile }) => {
+          const top = profile.categorical_statistics?.top_values[0];
+          return <li key={typeInfo.column}><code>{typeInfo.column}</code><span>{top ? `${formatValue(top.value)} (${formatPercent(top.percentage)})` : "No values"}</span></li>;
+        })}</ul> : <p className="empty-state">Not applicable: no categorical features were detected.</p>}</article>
+        <article><h3>Target diagnostics</h3>{insights?.target ? <ul>
+          <li><span>Configured target</span><strong>{insights.target}</strong></li>
+          <li><span>Problem type</span><strong>{insights.problem_type ? humanize(insights.problem_type) : "Pending"}</strong></li>
+          <li><span>Target distribution</span><strong>{insights.target_distribution.length ? `${insights.target_distribution.length} group(s)` : "Not available"}</strong></li>
+          <li><span>Categorical vs target</span><strong>{insights.category_target_rates.length ? "Available" : "Not applicable"}</strong></li>
+        </ul> : <p className="empty-state">Not applicable: configure a target to unlock target-aware EDA.</p>}</article>
+        <article><h3>Missingness patterns</h3>{missingPatterns?.patterns.length ? <ul>{missingPatterns.patterns.slice(0, 5).map((pattern) => <li key={pattern.columns.join("|")}><span title={pattern.columns.join(", ")}>{pattern.columns.join(", ")}</span><strong>{formatNumber(pattern.row_count, 0)} rows ({formatPercent(pattern.percentage)})</strong></li>)}</ul> : <p className="empty-state">No co-occurring missing-value patterns were detected.</p>}</article>
+        <article><h3>Featureâ€“target relevance</h3>{insights?.feature_target_ranking.items.length ? <ul>{insights.feature_target_ranking.items.slice(0, 8).map((item) => <li key={item.feature}><code>{item.feature}</code><strong>{formatNumber(item.score, 4)}</strong></li>)}</ul> : <p className="empty-state">{insights?.feature_target_ranking.message ?? "Not applicable: configure a supervised target first."}</p>}<small>Mutual-information scores rank association strength; they do not imply causation.</small></article>
+      </div>
+    </section>
+  );
+}
+
 function EmptySection({ title, message }: { title: string; message: string }) {
   return (
     <section className="intelligence-section empty-intelligence-section">
@@ -488,6 +541,7 @@ export default function DatasetIntelligence() {
       case "outliers": return <OutliersSection entries={entries} />;
       case "correlations": return <CorrelationsSection profile={profile} />;
       case "distributions": return <DistributionsSection entries={entries} />;
+      case "advanced": return <AdvancedEdaSection entries={entries} insights={insights} profile={profile} />;
       default: return <><VisualDashboard profile={profile} dataset={dataset} insights={insights} /><VisualizationAvailability profile={profile} insights={insights} /><OverviewSection profile={profile} /></>;
     }
   })();

@@ -1600,6 +1600,15 @@ caption,
   color: var(--awof-muted);
 }
 
+.advanced-eda-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.advanced-eda-grid article { padding: 1rem; border: 1px solid var(--awof-border); border-radius: 9px; background: var(--awof-panel-soft); }
+.advanced-eda-grid h3 { margin: 0 0 .75rem; color: var(--awof-text); font-size: .95rem; }
+.advanced-eda-grid ul { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.advanced-eda-grid li { display: flex; align-items: center; justify-content: space-between; gap: .75rem; color: var(--awof-muted); font-size: .82rem; }
+.advanced-eda-grid li strong, .advanced-eda-grid li code { color: var(--awof-text); }
+
+@media (max-width: 700px) { .advanced-eda-grid { grid-template-columns: 1fr; } }
+
 @media (max-width: 620px) {
   .overview-links,
   .error-boundary > div {

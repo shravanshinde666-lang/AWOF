@@ -14,13 +14,14 @@ from sklearn.impute import SimpleImputer
 from sklearn.metrics import silhouette_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, RobustScaler, StandardScaler
 
 from awof.amra.model_registry import MODEL_REGISTRY
 
 from .cross_validation import evaluate_cross_validation
 from .evaluator import classification_metrics, clustering_metrics, regression_metrics
 from .factories import build_estimator
+from .tuning import tune_pipeline
 
 
 RANDOM_STATE = 42
@@ -84,13 +85,37 @@ def _feature_frame(dataframe: pd.DataFrame, target_column: str | None, profile: 
     }
 
 
-def build_preprocessor(features: pd.DataFrame, requires_scaling: bool) -> ColumnTransformer:
+def preprocessing_plan(features: pd.DataFrame, requires_scaling: bool, profile: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Describe the leakage-safe transformations selected for a feature frame."""
     numerical = list(features.select_dtypes(include=[np.number]).columns)
     categorical = [column for column in features.columns if column not in numerical]
+    outlier_columns = []
+    if profile:
+        for column in numerical:
+            outliers = (profile.get("columns", {}).get(column) or {}).get("outliers") or {}
+            if int(outliers.get("outlier_count", 0)) > 0:
+                outlier_columns.append(column)
+    scaler = "robust" if requires_scaling and outlier_columns else "standard" if requires_scaling else None
+    return {
+        "numeric_imputation": "median" if numerical else None,
+        "categorical_imputation": "most_frequent" if categorical else None,
+        "categorical_encoding": "one_hot" if categorical else None,
+        "scaling": scaler,
+        "outlier_aware_columns": outlier_columns,
+        "fit_within_training_folds": True,
+    }
+
+
+def build_preprocessor(features: pd.DataFrame, requires_scaling: bool, profile: dict[str, Any] | None = None) -> ColumnTransformer:
+    numerical = list(features.select_dtypes(include=[np.number]).columns)
+    categorical = [column for column in features.columns if column not in numerical]
+    plan = preprocessing_plan(features, requires_scaling, profile)
     transformers: list[tuple[str, Pipeline, list[str]]] = []
     if numerical:
         numeric_steps: list[tuple[str, Any]] = [("imputer", SimpleImputer(strategy="median"))]
-        if requires_scaling:
+        if plan["scaling"] == "robust":
+            numeric_steps.append(("scaler", RobustScaler()))
+        elif plan["scaling"] == "standard":
             numeric_steps.append(("scaler", StandardScaler()))
         transformers.append(("numeric", Pipeline(numeric_steps), numerical))
     if categorical:
@@ -101,10 +126,10 @@ def build_preprocessor(features: pd.DataFrame, requires_scaling: bool) -> Column
     return ColumnTransformer(transformers=transformers, remainder="drop", verbose_feature_names_out=False)
 
 
-def build_supervised_pipeline(features: pd.DataFrame, model_id: str) -> Pipeline:
+def build_supervised_pipeline(features: pd.DataFrame, model_id: str, profile: dict[str, Any] | None = None) -> Pipeline:
     metadata = MODEL_METADATA[model_id]
     return Pipeline([
-        ("preprocessor", build_preprocessor(features, metadata["requires_scaling"])),
+        ("preprocessor", build_preprocessor(features, metadata["requires_scaling"], profile)),
         ("model", build_estimator(model_id)),
     ])
 
@@ -132,7 +157,7 @@ def _supervised_result(
         except ValueError:
             x_train, x_test, y_train, y_test = train_test_split(features, target, test_size=TEST_SIZE, random_state=RANDOM_STATE, stratify=None)
             warnings.append("Stratified split was not feasible; a deterministic unstratified split was used.")
-        pipeline = build_supervised_pipeline(features, model_id)
+        pipeline = build_supervised_pipeline(features, model_id, profile)
         cv_metrics, cv_warnings = evaluate_cross_validation(clone(pipeline), x_train, y_train, problem_type)
         warnings.extend(cv_warnings)
         pipeline.fit(x_train, y_train)
@@ -146,7 +171,8 @@ def _supervised_result(
         return {
             "model_id": model_id, "status": "completed", "training_duration_ms": round((time.perf_counter() - started) * 1000, 3),
             "cross_validation_metrics": cv_metrics, "test_metrics": test_metrics, "feature_count": int(features.shape[1]),
-            "train_rows": int(len(x_train)), "test_rows": int(len(x_test)), "warnings": warnings, **preparation,
+            "train_rows": int(len(x_train)), "test_rows": int(len(x_test)), "warnings": warnings,
+            "preprocessing_plan": preprocessing_plan(features, MODEL_METADATA[model_id]["requires_scaling"], profile), **preparation,
         }, pipeline
     except Exception as exc:
         return {
@@ -163,7 +189,7 @@ def _clustering_result(model_id: str, dataframe: pd.DataFrame, profile: dict[str
         if len(features) < 3:
             raise ValueError("Clustering requires at least three usable rows.")
         metadata = MODEL_METADATA[model_id]
-        preprocessor = build_preprocessor(features, metadata["requires_scaling"])
+        preprocessor = build_preprocessor(features, metadata["requires_scaling"], profile)
         transformed = preprocessor.fit_transform(features)
         evaluated_k: list[dict[str, Any]] = []
         selected_k = 2
@@ -177,7 +203,7 @@ def _clustering_result(model_id: str, dataframe: pd.DataFrame, profile: dict[str
             if valid:
                 selected_k = max(valid, key=lambda item: (item["silhouette_score"], -item["k"]))["k"]
         estimator = build_estimator(model_id, n_clusters=selected_k)
-        pipeline = Pipeline([("preprocessor", build_preprocessor(features, metadata["requires_scaling"])), ("model", estimator)])
+        pipeline = Pipeline([("preprocessor", build_preprocessor(features, metadata["requires_scaling"], profile)), ("model", estimator)])
         pipeline.fit(features)
         model = pipeline.named_steps["model"]
         labels = model.labels_ if hasattr(model, "labels_") else model.predict(pipeline.named_steps["preprocessor"].transform(features))
@@ -192,7 +218,7 @@ def _clustering_result(model_id: str, dataframe: pd.DataFrame, profile: dict[str
             "model_id": model_id, "status": "completed", "training_duration_ms": round((time.perf_counter() - started) * 1000, 3),
             "cross_validation_metrics": {"applicable": False, "reason": "Cross-validation is not applied to unsupervised clustering."},
             "test_metrics": metrics, "feature_count": int(features.shape[1]), "train_rows": int(len(features)), "test_rows": 0,
-            "warnings": warnings, **preparation, **extra,
+            "warnings": warnings, "preprocessing_plan": preprocessing_plan(features, metadata["requires_scaling"], profile), **preparation, **extra,
         }, pipeline
     except Exception as exc:
         return {
@@ -251,3 +277,26 @@ def train_recommended_models(
     best_model = select_best_model(results, problem_type)
     comparison = [{"model_id": item["model_id"], "status": item["status"], "metrics": item["test_metrics"]} for item in results]
     return {"problem_type": problem_type, "results": results, "best_model": best_model, "comparison": comparison}, pipelines
+
+
+def tune_best_model(dataframe: pd.DataFrame, configuration: dict[str, Any], evaluation: dict[str, Any], profile: dict[str, Any] | None = None) -> tuple[dict[str, Any], Pipeline | None]:
+    """Tune the selected supervised model and retain it only on held-out improvement."""
+    problem_type = configuration["problem_type"]
+    target_column = (configuration.get("target") or {}).get("column")
+    best = evaluation.get("best_model") or {}
+    if problem_type not in {"classification", "regression"} or not target_column or not best.get("model_id"):
+        return {"status": "not_applicable", "reason": "Tuning requires a selected supervised model."}, None
+    try:
+        features, target, _ = _feature_frame(dataframe, target_column, profile, problem_type)
+        x_train, x_test, y_train, y_test = train_test_split(features, target, test_size=TEST_SIZE, random_state=RANDOM_STATE, stratify=target if problem_type == "classification" and target.value_counts().min() >= 2 else None)
+        model_id = best["model_id"]
+        baseline = build_supervised_pipeline(features, model_id, profile).fit(x_train, y_train)
+        tuned, audit = tune_pipeline(build_supervised_pipeline(features, model_id, profile), x_train, y_train, model_id, problem_type)
+        baseline_metrics, _ = (classification_metrics(y_test, baseline.predict(x_test), baseline.predict_proba(x_test) if hasattr(baseline, "predict_proba") else None) if problem_type == "classification" else regression_metrics(y_test, baseline.predict(x_test)))
+        tuned_metrics, _ = (classification_metrics(y_test, tuned.predict(x_test), tuned.predict_proba(x_test) if hasattr(tuned, "predict_proba") else None) if problem_type == "classification" else regression_metrics(y_test, tuned.predict(x_test)))
+        metric = "positive_f1" if problem_type == "classification" else "rmse"
+        before, after = baseline_metrics.get(metric), tuned_metrics.get(metric)
+        improved = after is not None and before is not None and (after > before if problem_type == "classification" else after < before)
+        return {"status": "improved" if improved else "not_improved", "model_id": model_id, "metric": metric, "baseline_metrics": baseline_metrics, "tuned_metrics": tuned_metrics, "audit": audit}, tuned if improved else None
+    except Exception as exc:
+        return {"status": "failed", "reason": str(exc)}, None

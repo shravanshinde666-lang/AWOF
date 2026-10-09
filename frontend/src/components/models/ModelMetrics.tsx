@@ -16,6 +16,7 @@ export default function ModelMetrics({ result, problemType }: { result: ModelTra
       <p>Status: {result.status} · AMRA score: {result.amra_score === undefined ? "Not available" : `${(result.amra_score * 100).toFixed(0)}%`}</p>
       <p>Training time: {result.training_duration_ms} ms</p>
       <table><tbody>{labels.map(([label, value]) => <tr key={String(label)}><th>{String(label)}</th><td>{metric(value)}</td></tr>)}</tbody></table>
+      {result.preprocessing_plan && <p className="model-preprocessing"><strong>Leakage-safe preprocessing:</strong> {result.preprocessing_plan.numeric_imputation ?? "no numeric imputation"} imputation, {result.preprocessing_plan.categorical_encoding ?? "no categorical encoding"} encoding{result.preprocessing_plan.scaling ? `, ${result.preprocessing_plan.scaling} scaling` : ""}. {result.preprocessing_plan.outlier_aware_columns.length ? `Robust handling selected for: ${result.preprocessing_plan.outlier_aware_columns.join(", ")}.` : ""}</p>}
       {Array.isArray(metrics.confusion_matrix) && <table><caption>Confusion Matrix</caption><tbody>{(metrics.confusion_matrix as unknown[][]).map((row, index) => <tr key={index}>{row.map((cell, cellIndex) => <td key={cellIndex}>{String(cell)}</td>)}</tr>)}</tbody></table>}
       {result.warnings.length > 0 && <p>{result.warnings.join(" ")}</p>}
     </article>

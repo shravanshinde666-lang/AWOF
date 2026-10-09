@@ -4,7 +4,8 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 
 from awof.amra import AMRARecommender
-from awof.ml.trainer import build_supervised_pipeline, select_best_model, train_recommended_models
+from awof.ml.trainer import build_supervised_pipeline, preprocessing_plan, select_best_model, train_recommended_models
+from awof.ml.tuning import tune_pipeline
 from tests.test_amra import configuration, execution, profile_for
 
 
@@ -49,6 +50,23 @@ class MachineLearningTests(unittest.TestCase):
         self.assertIsInstance(pipeline, Pipeline)
         self.assertIn("preprocessor", pipeline.named_steps)
         self.assertNotIn("transformers_", pipeline.named_steps["preprocessor"].__dict__)
+
+    def test_preprocessing_plan_uses_robust_scaling_when_profile_reports_outliers(self) -> None:
+        data = pd.DataFrame({"amount": [1.0, 2.0, 3.0], "group": ["a", "b", "a"]})
+        profile = {"columns": {"amount": {"outliers": {"outlier_count": 1}}}}
+        plan = preprocessing_plan(data, requires_scaling=True, profile=profile)
+        self.assertEqual(plan["numeric_imputation"], "median")
+        self.assertEqual(plan["categorical_encoding"], "one_hot")
+        self.assertEqual(plan["scaling"], "robust")
+        self.assertTrue(plan["fit_within_training_folds"])
+
+    def test_randomized_tuning_returns_a_refit_leakage_safe_pipeline(self) -> None:
+        features = pd.DataFrame({"x": list(range(18)), "group": ["a", "b"] * 9})
+        target = pd.Series(["no"] * 9 + ["yes"] * 9)
+        tuned, audit = tune_pipeline(build_supervised_pipeline(features, "logistic_regression"), features, target, "logistic_regression", "classification")
+        self.assertIsInstance(tuned, Pipeline)
+        self.assertEqual(audit["scoring"], "f1_weighted")
+        self.assertTrue(audit["best_parameters"])
 
     def test_model_failure_isolated_from_other_recommended_models(self) -> None:
         data = pd.DataFrame({"x": list(range(30)), "target": ["no"] * 15 + ["yes"] * 15})

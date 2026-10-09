@@ -7,5 +7,6 @@ export const recommendModels = (datasetId: string) => api.post<AMRAResult>(`${ba
 export const getRecommendations = (datasetId: string) => api.get<AMRAResult>(`${base(datasetId)}/recommendations`).then((response) => response.data);
 export const trainModels = (datasetId: string) => api.post<ModelEvaluationResult>(`${base(datasetId)}/train`).then((response) => response.data);
 export const getEvaluation = (datasetId: string) => api.get<ModelEvaluationResult>(`${base(datasetId)}/evaluation`).then((response) => response.data);
+export const tuneBestModel = (datasetId: string) => api.post(`${base(datasetId)}/tune`).then((response) => response.data);
 export const startTrainingJob = (datasetId: string) => api.post<TrainingJobStatus>(`${base(datasetId)}/train-job`).then((response) => response.data);
 export const getTrainingJob = (datasetId: string) => api.get<TrainingJobStatus>(`${base(datasetId)}/train-job`).then((response) => response.data);

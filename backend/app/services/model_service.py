@@ -11,6 +11,7 @@ import numpy as np
 
 from awof.amra import AMRARecommender
 from awof.ml import train_recommended_models
+from awof.ml.trainer import tune_best_model
 
 from ..config.settings import BACKEND_DIR
 from ..database import repository
@@ -176,6 +177,16 @@ def get_evaluation(dataset_id: str) -> dict[str, Any]:
         return repository.get_stage(dataset_id, "model_evaluation")
     except repository.PersistenceNotFoundError as exc:
         raise ModelResultNotFoundError("Recommended models have not been trained.") from exc
+
+
+def tune_selected_model(dataset_id: str) -> dict[str, Any]:
+    """Run the bounded improvement loop for the selected supervised model."""
+    profile, configuration, _, dataframe = _resolve_inputs(dataset_id)
+    evaluation = get_evaluation(dataset_id)
+    tuning, _ = tune_best_model(dataframe, configuration, evaluation, profile)
+    evaluation["tuning"] = tuning
+    repository.save_stage(dataset_id, "model_evaluation", evaluation)
+    return tuning
 
 
 def get_prediction_records(dataset_id: str) -> list[dict[str, Any]]:

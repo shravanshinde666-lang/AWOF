@@ -46,8 +46,37 @@ class QualityAnalyzer:
     def __init__(self, dataframe: pd.DataFrame) -> None:
         self.dataframe = dataframe
 
+    def _missingness_patterns(self, column_keys: list[str]) -> dict[str, Any]:
+        """Summarise co-occurring missing values without exposing row data."""
+        rows = int(len(self.dataframe))
+        if rows == 0 or not bool(self.dataframe.isna().to_numpy().any()):
+            return {"patterns": [], "distinct_patterns": 0}
+
+        counts: dict[tuple[str, ...], int] = {}
+        for row in self.dataframe.isna().itertuples(index=False, name=None):
+            missing_columns = tuple(column_keys[index] for index, is_missing in enumerate(row) if is_missing)
+            if missing_columns:
+                counts[missing_columns] = counts.get(missing_columns, 0) + 1
+
+        ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+        return {
+            "patterns": [
+                {
+                    "columns": list(columns),
+                    "row_count": count,
+                    "percentage": float(count / rows * 100.0),
+                }
+                for columns, count in ranked[:10]
+            ],
+            "distinct_patterns": len(ranked),
+        }
+
     def analyze(self, column_types: Iterable[dict[str, Any]] | None = None) -> dict[str, Any]:
         type_list = list(column_types) if column_types is not None else []
+        column_keys = [
+            str(type_list[position].get("column_key", column_name)) if position < len(type_list) else str(column_name)
+            for position, column_name in enumerate(self.dataframe.columns)
+        ]
         missing_by_column: dict[str, dict[str, Any]] = {}
         total_missing = 0
         for position, column_name in enumerate(self.dataframe.columns):
@@ -75,6 +104,7 @@ class QualityAnalyzer:
                 total_missing / total_cells * 100.0 if total_cells else 0.0
             ),
             "by_column": missing_by_column,
+            "patterns": self._missingness_patterns(column_keys),
         }
         duplicates = {
             "duplicate_rows": duplicate_rows,

@@ -191,8 +191,8 @@ def store_profile(dataset_id: str, profile: dict[str, Any]) -> None:
 def get_profile(dataset_id: str) -> dict[str, Any]:
     try:
         profile = repository.get_stage(dataset_id, "profile")
-        if profile.get("profile_version") != "2.0-normalized":
-            from awof.profiler.dataset_profiler import DatasetProfiler
+        from awof.profiler.dataset_profiler import DatasetProfiler, PROFILE_VERSION
+        if profile.get("profile_version") != PROFILE_VERSION:
             profile = DatasetProfiler(load_dataset_dataframe(dataset_id), dataset_id).generate_profile()
             repository.save_stage(dataset_id, "profile", profile)
         return profile

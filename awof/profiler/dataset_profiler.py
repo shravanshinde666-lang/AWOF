@@ -21,7 +21,7 @@ from .quality_analyzer import QualityAnalyzer
 from .statistics import calculate_categorical_statistics, calculate_numeric_statistics
 from .type_detector import TypeDetector
 
-PROFILE_VERSION = "2.0-normalized"
+PROFILE_VERSION = "2.1-advanced-eda"
 
 
 def correlation_strength(correlation: float) -> str:

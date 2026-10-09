@@ -1,0 +1,156 @@
+AWOF — DATA SCIENCE CONCEPTS USED IN THE PROJECT
+=================================================
+
+1. Dataset Upload and Loading
+Files: backend/app/services/dataset_service.py
+Why: Accepts CSV and Excel datasets safely.
+What happens: Validates files, loads them with Pandas, normalizes blank values, and prepares a working dataframe.
+
+2. Data Type and Attribute Detection
+Files: awof/profiler/type_detector.py
+Why: Different data types need different analysis and preprocessing.
+What happens: Detects numerical, categorical, boolean, datetime, text, identifier, constant, and high-cardinality columns.
+
+3. Data Quality Analysis
+Files: awof/profiler/quality_analyzer.py
+Why: Poor-quality data can produce unreliable models.
+What happens: Finds missing values, duplicate rows, constant columns, high-cardinality columns, and co-occurring missingness patterns.
+
+4. Descriptive Statistics
+Files: awof/profiler/statistics.py
+Why: Summarises the center, spread, and shape of numeric data.
+What happens: Calculates mean, median, mode, min, max, range, variance, standard deviation, quartiles, IQR, skewness, and kurtosis.
+
+5. Dataset Profiling
+Files: awof/profiler/dataset_profiler.py
+Why: Creates one factual summary of the uploaded dataset before modelling.
+What happens: Combines data types, quality checks, statistics, distributions, outliers, and correlations.
+
+6. Missing Value Handling
+Files: awof/preprocessing/missing_values.py, awof/ml/trainer.py
+Why: ML algorithms cannot reliably train with missing values.
+What happens: Uses median imputation for numeric data and most-frequent/mode imputation for categorical data inside the training pipeline.
+
+7. Duplicate Handling
+Files: awof/preprocessing/duplicates.py
+Why: Duplicate records can bias analysis and training.
+What happens: Removes exact duplicate rows when this workflow stage is selected.
+
+8. Outlier Detection
+Files: awof/profiler/outlier_detector.py, awof/preprocessing/outliers.py
+Why: Extreme numeric values may affect statistics and models.
+What happens: Uses the IQR method to flag outliers for review; values are not silently removed.
+
+9. Data Transformation
+Files: backend/app/services/dataset_service.py
+Why: Raw uploaded values may not be analysis-ready.
+What happens: Converts blank strings to missing values and numeric-looking text to numeric values.
+
+10. Categorical Encoding
+Files: awof/preprocessing/encoding.py, awof/ml/trainer.py
+Why: Models require numeric representations of categories.
+What happens: Uses one-hot encoding and ignores unknown categories safely during prediction.
+
+11. Feature Scaling
+Files: awof/preprocessing/scaling.py, awof/ml/trainer.py
+Why: Scale-sensitive algorithms need comparable feature ranges.
+What happens: Uses StandardScaler normally and RobustScaler when profile evidence shows outliers.
+
+12. Feature Selection
+Files: awof/preprocessing/feature_selection.py
+Why: Identifier and constant features usually do not improve predictions.
+What happens: Removes identifier-like and constant features.
+
+13. Dimensionality Reduction
+Files: awof/preprocessing/transformation.py
+Why: Many numerical features may increase complexity.
+What happens: Uses PCA to reduce dimensions while retaining useful variance when selected.
+
+14. Exploratory Data Analysis (EDA)
+Files: frontend/src/pages/DatasetIntelligence.tsx, awof/profiler/distribution_analyzer.py
+Why: Helps understand data before modelling.
+What happens: Shows distributions, histograms, boxplot-ready statistics, category frequencies, skewness, kurtosis, missingness, and outliers.
+
+15. Correlation and Heatmap Analysis
+Files: awof/profiler/dataset_profiler.py, backend/app/services/insight_service.py
+Why: Finds relationships between numeric variables.
+What happens: Calculates Pearson correlations and supplies heatmap data. Correlation is association, not causation.
+
+16. Feature–Target Relevance Ranking
+Files: backend/app/services/insight_service.py
+Why: Identifies useful numeric features for a configured target.
+What happens: Uses mutual information for classification and regression target analysis.
+
+17. Classification
+Files: awof/ml/classification/, awof/ml/trainer.py
+Why: Predicts categorical outcomes such as churn yes/no.
+What happens: Supports Logistic Regression, Random Forest, Gradient Boosting, and optional XGBoost.
+
+18. Regression
+Files: awof/ml/regression/, awof/ml/trainer.py
+Why: Predicts continuous numeric outcomes such as revenue.
+What happens: Supports Linear Regression, Ridge, Random Forest Regressor, Gradient Boosting, and optional XGBoost.
+
+19. Clustering
+Files: awof/ml/clustering/, awof/ml/trainer.py
+Why: Finds groups when no target label exists.
+What happens: Supports K-Means, DBSCAN, and Agglomerative Clustering.
+
+20. Train/Test Split and Cross-Validation
+Files: awof/ml/trainer.py, awof/ml/cross_validation.py
+Why: Measures how models perform on unseen data.
+What happens: Uses a deterministic 80/20 train-test split and cross-validation on training data.
+
+21. Leakage-Safe Preprocessing
+Files: awof/ml/trainer.py
+Why: Prevents information from test data leaking into training.
+What happens: Imputation, encoding, and scaling are fitted only inside training folds.
+
+22. Model Evaluation
+Files: awof/ml/evaluator.py
+Why: Selects models using observed, task-appropriate metrics.
+What happens: Classification uses accuracy, precision, recall, F1, ROC-AUC, Brier score, and confusion matrix. Regression uses MAE, RMSE, and R-squared. Clustering uses Silhouette, Davies-Bouldin, and Calinski-Harabasz scores.
+
+23. Target Leakage Alert
+Files: awof/ml/trainer.py
+Why: A feature that mirrors the target can create falsely excellent results.
+What happens: Flags near-perfect numerical relationships with regression targets for user review.
+
+24. Hyperparameter Tuning
+Files: awof/ml/tuning.py, awof/ml/trainer.py
+Why: Baseline model parameters are not always optimal.
+What happens: Uses bounded RandomizedSearchCV and retains a tuned model only if it improves the held-out metric.
+
+25. Explainable AI
+Files: awof/explainability/feature_importance.py
+Why: Users need to understand influential model features.
+What happens: Produces global importance using model coefficients, tree importances, or permutation importance.
+
+26. Adaptive Workflow Generation
+Files: awof/acsa/, awof/awga/, frontend/src/components/workflow/WorkflowGraph.tsx
+Why: Every dataset does not require every DS step.
+What happens: ACSA assesses required capabilities and AWGA builds a dataset-aware DAG workflow.
+
+27. Model Recommendation
+Files: awof/amra/
+Why: Different datasets are suitable for different algorithms.
+What happens: AMRA ranks compatible model candidates using data profile and workflow signals.
+
+28. Business Prioritisation
+Files: awof/cips/, backend/app/services/business_service.py
+Why: Predictions must support real decisions.
+What happens: CIPS creates Immediate, High, Medium, and Monitor business-priority groups.
+
+29. Reproducibility Notebook
+Files: backend/app/services/execution_service.py
+Why: Users should be able to reproduce EDA and preprocessing without hidden steps.
+What happens: Generates a privacy-preserving Jupyter notebook with executable EDA and recorded workflow methods.
+
+30. Visualisation and Reporting
+Files: frontend/src/pages/DatasetIntelligence.tsx, frontend/src/pages/Report.tsx
+Why: Results must be understandable for technical and non-technical users.
+What happens: Shows dashboards, charts, evaluation summaries, explainability, and printable reports.
+
+SYLLABUS TOPICS COVERED
+------------------------
+Pandas and tabular data processing; data types; mean, median, mode, variance, standard deviation, quartiles, IQR; missing values; duplicates; outliers; transformation; encoding; scaling; feature selection; PCA; EDA; histograms; boxplots; correlations; heatmaps; classification; regression; clustering; train-test split; cross-validation; accuracy; precision; recall; F1-score; ROC-AUC; MAE; RMSE; R-squared; tuning; explainability; reports.

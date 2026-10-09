@@ -132,6 +132,10 @@ export interface DataQualitySummary {
     total_missing: number;
     overall_missing_percentage: number;
     by_column: Record<string, MissingValueInfo>;
+    patterns?: {
+      patterns: Array<{ columns: string[]; row_count: number; percentage: number }>;
+      distinct_patterns: number;
+    };
   };
   duplicates: {
     duplicate_rows: number;

@@ -74,6 +74,16 @@ class EndToEndAuditTests(TestCase):
     def test_complete_classification_research_persistence_and_deletion(self) -> None:
         dataset_id = self._upload_csv(_classification_frame(), "audit_classification.csv")
         self._prepare(dataset_id, "analyze_retention", "churn")
+        notebook = self.client.get(f"/api/v1/datasets/{dataset_id}/execution/notebook")
+        self.assertEqual(notebook.status_code, 200)
+        self.assertEqual(notebook.headers["content-type"], "application/x-ipynb+json")
+        notebook_payload = notebook.json()
+        self.assertEqual(notebook_payload["nbformat"], 4)
+        self.assertGreaterEqual(len(notebook_payload["cells"]), 12)
+        self.assertEqual(notebook_payload["metadata"]["awof"]["target_column"], "churn")
+        sources = "\n".join("".join(cell["source"]) for cell in notebook_payload["cells"])
+        self.assertIn("Numerical exploratory data analysis", sources)
+        self.assertIn("AWOF execution audit", sources)
         evaluation = self.client.get(f"/api/v1/datasets/{dataset_id}/models/evaluation")
         self.assertEqual(evaluation.status_code, 200)
         artifact = evaluation.json()["best_model"]["artifact_filename"]
