@@ -1,21 +1,24 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import Navbar from "./components/common/Navbar";
 import Sidebar from "./components/common/Sidebar";
-import DatasetIntelligence from "./pages/DatasetIntelligence";
-import ConfigureAnalysis from "./pages/ConfigureAnalysis";
-import CapabilityScores from "./pages/CapabilityScores";
-import Workflow from "./pages/Workflow";
-import Execution from "./pages/Execution";
-import ModelSelection from "./pages/ModelSelection";
-import Evaluation from "./pages/Evaluation";
-import Explainability from "./pages/Explainability";
-import BusinessIntelligence from "./pages/BusinessIntelligence";
-import ResearchComparison from "./pages/ResearchComparison";
-import Home from "./pages/Home";
-import UploadDataset from "./pages/UploadDataset";
-import Report from "./pages/Report";
+
+const Home = lazy(() => import("./pages/Home"));
+const UploadDataset = lazy(() => import("./pages/UploadDataset"));
+const DatasetIntelligence = lazy(() => import("./pages/DatasetIntelligence"));
+const ConfigureAnalysis = lazy(() => import("./pages/ConfigureAnalysis"));
+const CapabilityScores = lazy(() => import("./pages/CapabilityScores"));
+const Workflow = lazy(() => import("./pages/Workflow"));
+const Execution = lazy(() => import("./pages/Execution"));
+const ModelSelection = lazy(() => import("./pages/ModelSelection"));
+const Evaluation = lazy(() => import("./pages/Evaluation"));
+const Explainability = lazy(() => import("./pages/Explainability"));
+const BusinessIntelligence = lazy(() => import("./pages/BusinessIntelligence"));
+const ResearchComparison = lazy(() => import("./pages/ResearchComparison"));
+const Report = lazy(() => import("./pages/Report"));
+const ProjectHistory = lazy(() => import("./pages/ProjectHistory"));
 
 export default function App() {
   return (
@@ -25,7 +28,8 @@ export default function App() {
           <Sidebar />
           <div className="app-content">
             <Navbar />
-            <Routes>
+            <Suspense fallback={<main className="page route-loading" role="status">Loading workspace...</main>}>
+              <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<UploadDataset />} />
             <Route path="/datasets/:datasetId/intelligence" element={<DatasetIntelligence />} />
@@ -39,7 +43,9 @@ export default function App() {
             <Route path="/datasets/:datasetId/business" element={<BusinessIntelligence />} />
             <Route path="/datasets/:datasetId/research" element={<ResearchComparison />} />
             <Route path="/datasets/:datasetId/report" element={<Report />} />
-            </Routes>
+            <Route path="/datasets/:datasetId/history" element={<ProjectHistory />} />
+              </Routes>
+            </Suspense>
           </div>
         </div>
       </BrowserRouter>

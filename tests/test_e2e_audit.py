@@ -93,6 +93,13 @@ class EndToEndAuditTests(TestCase):
         report = self.client.get(f"/api/v1/datasets/{dataset_id}/report")
         self.assertEqual(report.status_code, 200)
         self.assertIsNotNone(report.json()["stages"]["model_evaluation"])
+        business_report = report.json()["stages"]["business_priority"]
+        self.assertIn("summary", business_report)
+        self.assertNotIn("result", business_report)
+        self.assertTrue(business_report["items"])
+        compact_report = self.client.get(f"/api/v1/datasets/{dataset_id}/report?compact=true")
+        self.assertEqual(compact_report.status_code, 200)
+        self.assertEqual(compact_report.json()["stages"]["business_priority"]["items"], [])
 
         # Replacing the SQLAlchemy engine simulates a new service/session after restart.
         configure_database()

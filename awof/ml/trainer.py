@@ -28,7 +28,28 @@ TEST_SIZE = 0.20
 MODEL_METADATA = {item["id"]: item for item in MODEL_REGISTRY}
 
 
-def _feature_frame(dataframe: pd.DataFrame, target_column: str | None, profile: dict[str, Any] | None) -> tuple[pd.DataFrame, pd.Series | None, dict[str, Any]]:
+def _target_leakage_audit(features: pd.DataFrame, target: pd.Series, problem_type: str) -> tuple[list[str], list[str]]:
+    """Surface suspicious target relationships without silently dropping valid features.
+
+    A held-out split prevents preprocessing leakage, but it cannot determine
+    whether a feature would exist at prediction time. Near-perfect numerical
+    associations are therefore reported to the user for domain review.
+    """
+    if problem_type != "regression" or not pd.api.types.is_numeric_dtype(target):
+        return [], []
+    numeric = features.select_dtypes(include=[np.number])
+    warnings: list[str] = []
+    flagged: list[str] = []
+    target_values = pd.to_numeric(target, errors="coerce")
+    for column in numeric.columns:
+        correlation = pd.concat([numeric[column], target_values], axis=1).corr().iloc[0, 1]
+        if pd.notna(correlation) and abs(float(correlation)) >= 0.995:
+            flagged.append(str(column))
+            warnings.append(f"Potential target leakage: '{column}' has a near-perfect correlation ({float(correlation):.3f}) with the target. Confirm it is available at prediction time.")
+    return flagged, warnings
+
+
+def _feature_frame(dataframe: pd.DataFrame, target_column: str | None, profile: dict[str, Any] | None, problem_type: str = "clustering") -> tuple[pd.DataFrame, pd.Series | None, dict[str, Any]]:
     data = dataframe.copy(deep=True)
     rows_removed_missing_target = 0
     if target_column:
@@ -52,10 +73,14 @@ def _feature_frame(dataframe: pd.DataFrame, target_column: str | None, profile: 
     usable = [column for column in usable if column not in constant_features]
     if not usable:
         raise ValueError("No usable non-identifier, non-constant features remain for model training.")
-    return data[usable].copy(), target, {
+    features = data[usable].copy()
+    leakage_features, leakage_warnings = _target_leakage_audit(features, target, problem_type) if target is not None else ([], [])
+    return features, target, {
         "rows_removed_missing_target": rows_removed_missing_target,
         "removed_identifier_features": identifier_features,
         "removed_constant_features": constant_features,
+        "suspected_leakage_features": leakage_features,
+        "leakage_warnings": leakage_warnings,
     }
 
 
@@ -94,8 +119,9 @@ def _supervised_result(
     warnings: list[str] = []
     started = time.perf_counter()
     try:
-        features, target, preparation = _feature_frame(dataframe, target_column, profile)
+        features, target, preparation = _feature_frame(dataframe, target_column, profile, problem_type)
         assert target is not None
+        warnings.extend(preparation.pop("leakage_warnings", []))
         if len(target) < 3 or target.nunique(dropna=True) < (2 if problem_type == "classification" else 1):
             raise ValueError("The dataset has too few usable target values for supervised training.")
         stratify = None

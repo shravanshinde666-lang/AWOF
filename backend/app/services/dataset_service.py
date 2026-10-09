@@ -219,14 +219,23 @@ def get_dataset_summary(dataset_id: str) -> dict[str, Any]:
     return {"dataset": metadata.model_dump(), "stages": get_dataset_history(dataset_id)}
 
 
-def get_final_report(dataset_id: str) -> dict[str, Any]:
+def get_final_report(dataset_id: str, *, compact: bool = False) -> dict[str, Any]:
     """Assemble existing persisted results without rerunning any algorithm."""
     metadata = _metadata(dataset_id)
     stage_names = ["profile", "configuration", "capabilities", "workflow", "pruned_workflow", "execution", "model_recommendations", "model_evaluation", "explainability", "business_priority"]
     stages: dict[str, Any] = {}
     for stage in stage_names:
         try:
-            stages[stage] = repository.get_stage(dataset_id, stage)
+            payload = repository.get_stage(dataset_id, stage)
+            # Business priority is persisted as a compact result plus a separate
+            # ranked item collection. Reports expose the same public shape as the
+            # dedicated CIPS API instead of leaking that storage wrapper.
+            if stage == "business_priority" and isinstance(payload.get("result"), dict):
+                payload = {
+                    **payload["result"],
+                    "items": [] if compact else payload.get("items", []),
+                }
+            stages[stage] = payload
         except repository.PersistenceNotFoundError:
             stages[stage] = None
     experiments = repository.list_experiments(dataset_id)

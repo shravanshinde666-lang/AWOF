@@ -7,10 +7,12 @@ from typing import Any
 import numpy as np
 from sklearn.metrics import (
     accuracy_score,
+    brier_score_loss,
     calinski_harabasz_score,
     confusion_matrix,
     davies_bouldin_score,
     f1_score,
+    log_loss,
     mean_absolute_error,
     mean_squared_error,
     precision_score,
@@ -38,6 +40,8 @@ def classification_metrics(y_true: Any, predictions: Any, probabilities: Any | N
         "confusion_matrix": confusion_matrix(y_true, predictions).tolist(),
         "roc_auc": None,
         "roc_auc_explanation": None,
+        "brier_score": None,
+        "log_loss": None,
         "positive_class": str(positive) if binary else None,
         "positive_precision": _rounded(precision_score(y_true, predictions, pos_label=positive, zero_division=0)) if binary else None,
         "positive_recall": _rounded(recall_score(y_true, predictions, pos_label=positive, zero_division=0)) if binary else None,
@@ -52,8 +56,12 @@ def classification_metrics(y_true: Any, predictions: Any, probabilities: Any | N
         if len(labels) < 2:
             raise ValueError("ROC-AUC requires at least two test classes.")
         if len(labels) == 2:
-            positive_index = list(getattr(probabilities, "classes_", []))
-            metrics["roc_auc"] = _rounded(roc_auc_score(y_true, probabilities[:, 1]))
+            positive_index = labels.index(positive)
+            positive_probabilities = np.asarray(probabilities)[:, positive_index]
+            positive_truth = (np.asarray(y_true) == positive).astype(int)
+            metrics["roc_auc"] = _rounded(roc_auc_score(positive_truth, positive_probabilities))
+            metrics["brier_score"] = _rounded(brier_score_loss(positive_truth, positive_probabilities))
+            metrics["log_loss"] = _rounded(log_loss(positive_truth, positive_probabilities, labels=[0, 1]))
         else:
             metrics["roc_auc"] = _rounded(roc_auc_score(y_true, probabilities, multi_class="ovr", average="weighted"))
     except (ValueError, IndexError) as exc:

@@ -33,6 +33,7 @@ class AnalysisConfigurationTests(unittest.TestCase):
     def test_continuous_target_suggests_regression(self) -> None:
         candidate = next(item for item in analyze_target_candidates(self.profile) if item["column"] == "revenue")
         self.assertEqual(candidate["suggested_problem_type"], "regression")
+        self.assertFalse(any("cardinality" in warning.lower() for warning in candidate["warnings"]))
 
     def test_identifier_is_not_recommended(self) -> None:
         candidate = next(item for item in analyze_target_candidates(self.profile) if item["column"] == "customer_id")

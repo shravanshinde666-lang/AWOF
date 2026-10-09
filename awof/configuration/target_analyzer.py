@@ -59,12 +59,9 @@ def analyze_target_candidates(profile: dict[str, Any]) -> list[dict[str, Any]]:
             elif missing_percentage >= 30:
                 warnings.append("Column has substantial missing values.")
 
-            if type_info.get("cardinality") in {"high", "near_unique"}:
-                if detected_type in CLASSIFICATION_TYPES:
-                    suitability = "low"
-                    warnings.append("High cardinality may make classification impractical.")
-                else:
-                    warnings.append("High cardinality should be reviewed before using this target.")
+            if type_info.get("cardinality") in {"high", "near_unique"} and detected_type in CLASSIFICATION_TYPES:
+                suitability = "low"
+                warnings.append("High cardinality may make classification impractical.")
 
             if suggested_problem_type == "unknown":
                 warnings.append("No reliable technical problem type could be inferred.")

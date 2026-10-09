@@ -69,9 +69,9 @@ async def retrieve_dataset_history(dataset_id: str) -> dict | JSONResponse:
 
 
 @router.get("/{dataset_id}/report", response_model=None)
-async def retrieve_final_report(dataset_id: str) -> dict | JSONResponse:
+async def retrieve_final_report(dataset_id: str, compact: bool = Query(False)) -> dict | JSONResponse:
     try:
-        return get_final_report(dataset_id)
+        return get_final_report(dataset_id, compact=compact)
     except DatasetNotFoundError as error:
         return error_response(404, str(error))
 

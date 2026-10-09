@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 import Loading from "../components/common/Loading";
 import VisualDashboard from "../components/dataset/VisualDashboard";
+import VisualizationAvailability from "../components/dataset/VisualizationAvailability";
 import { getDataset, type DatasetMetadata } from "../services/datasetService";
 import { getProfile, getVisualInsights, type VisualInsights } from "../services/profileService";
 import type {
@@ -487,7 +488,7 @@ export default function DatasetIntelligence() {
       case "outliers": return <OutliersSection entries={entries} />;
       case "correlations": return <CorrelationsSection profile={profile} />;
       case "distributions": return <DistributionsSection entries={entries} />;
-      default: return <><VisualDashboard profile={profile} dataset={dataset} insights={insights} /><OverviewSection profile={profile} /></>;
+      default: return <><VisualDashboard profile={profile} dataset={dataset} insights={insights} /><VisualizationAvailability profile={profile} insights={insights} /><OverviewSection profile={profile} /></>;
     }
   })();
 

@@ -7,7 +7,7 @@ const links = [
   ["Execution", "✓", "execution"], ["Models", "◈", "models"],
   ["Evaluation", "▤", "evaluation"], ["Explainability", "◌", "explainability"],
   ["Priorities", "♧", "business"], ["Research", "⌁", "research"],
-  ["Report", "R", "report"],
+  ["Report", "R", "report"], ["History", "H", "history"],
 ] as const;
 
 export default function Sidebar() {

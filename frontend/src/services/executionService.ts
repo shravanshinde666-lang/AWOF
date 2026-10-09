@@ -4,3 +4,4 @@ export const pruneWorkflow=(id:string)=>api.post(base(id)+"/workflow/prune").the
 export const getPrunedWorkflow=(id:string)=>api.get(base(id)+"/workflow/pruned").then(r=>r.data);
 export const executeWorkflow=(id:string)=>api.post(base(id)+"/execute").then(r=>r.data);
 export const getExecution=(id:string)=>api.get(base(id)+"/execution").then(r=>r.data);
+export const downloadExecutionNotebook=(id:string)=>api.get(base(id)+"/execution/notebook",{responseType:"blob"}).then(r=>r.data as Blob);

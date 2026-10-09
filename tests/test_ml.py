@@ -27,6 +27,13 @@ class MachineLearningTests(unittest.TestCase):
         completed = next(item for item in result["results"] if item["status"] == "completed")
         self.assertTrue({"mae", "rmse", "r2"}.issubset(completed["test_metrics"]))
 
+    def test_regression_surfaces_near_perfect_target_association(self) -> None:
+        data = pd.DataFrame({"copied_target": list(range(50)), "target": list(range(50))})
+        result, _ = train_recommended_models(data, configuration("regression", "target"), self._recommendation(data, "regression", "target"), profile_for(data, "target"))
+        completed = next(item for item in result["results"] if item["status"] == "completed")
+        self.assertIn("copied_target", completed["suspected_leakage_features"])
+        self.assertTrue(any("Potential target leakage" in warning for warning in completed["warnings"]))
+
     def test_clustering_training_generates_labels_and_quality_metric(self) -> None:
         data = pd.DataFrame({"x": [0, .1, -.1, .2, 10, 10.1, 9.9, 10.2, 20, 20.1, 19.9, 20.2], "y": [0, .2, .1, -.1, 10, 9.9, 10.2, 10.1, 20, 19.8, 20.1, 20.2]})
         recommendation = self._recommendation(data, "clustering")
