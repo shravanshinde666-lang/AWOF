@@ -94,7 +94,16 @@ class EndToEndAuditTests(TestCase):
         self.assertEqual(insights.status_code, 200)
         self.assertEqual(insights.json()["target"], "churn")
         self.assertTrue(insights.json()["target_distribution"])
+        self.assertEqual(self.client.post(f"/api/v1/datasets/{dataset_id}/models/tune").status_code, 200)
         self.assertEqual(self.client.post(f"/api/v1/datasets/{dataset_id}/explain").status_code, 200)
+        inf_schema = self.client.get(f"/api/v1/datasets/{dataset_id}/inference/schema")
+        self.assertEqual(inf_schema.status_code, 200)
+        self.assertTrue(inf_schema.json()["features"])
+        sample_vals = inf_schema.json()["sample_rows"][0]["values"]
+        inf_pred = self.client.post(f"/api/v1/datasets/{dataset_id}/inference/predict", json={"features": sample_vals})
+        self.assertEqual(inf_pred.status_code, 200)
+        self.assertIn("prediction", inf_pred.json())
+        self.assertIn("counterfactuals", inf_pred.json())
         self.assertEqual(self.client.post(f"/api/v1/datasets/{dataset_id}/business-priority").status_code, 200)
         experiment = self.client.post(f"/api/v1/datasets/{dataset_id}/experiments/compare", json={"runs": 1})
         self.assertEqual(experiment.status_code, 200, experiment.text)
@@ -123,6 +132,14 @@ class EndToEndAuditTests(TestCase):
         regression_id = self._upload_csv(_regression_frame(), "audit_regression.csv")
         self._prepare(regression_id, "optimize_revenue", "revenue")
         self.assertEqual(self.client.post(f"/api/v1/datasets/{regression_id}/explain").status_code, 200)
+        reg_schema = self.client.get(f"/api/v1/datasets/{regression_id}/inference/schema")
+        self.assertEqual(reg_schema.status_code, 200)
+        reg_pred = self.client.post(
+            f"/api/v1/datasets/{regression_id}/inference/predict",
+            json={"features": reg_schema.json()["sample_rows"][0]["values"]},
+        )
+        self.assertEqual(reg_pred.status_code, 200)
+        self.assertIn("counterfactuals", reg_pred.json())
         self.assertEqual(self.client.post(f"/api/v1/datasets/{regression_id}/business-priority").status_code, 200)
         self._delete(regression_id)
 

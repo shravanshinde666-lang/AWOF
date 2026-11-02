@@ -36,3 +36,60 @@ export interface ExplainabilityResult {
   local_explanations: LocalExplanation[];
   warnings: string[];
 }
+
+export interface FeatureMetaSchema {
+  name: string;
+  type: "numeric" | "integer" | "categorical";
+  min: number | null;
+  max: number | null;
+  mean: number | null;
+  median: number | null;
+  step: number | null;
+  default_value: string | number | null;
+  categories: string[] | null;
+}
+
+export interface SampleRowItem {
+  row_index: number;
+  label: string;
+  values: Record<string, string | number | null>;
+}
+
+export interface InferenceSchemaResponse {
+  dataset_id: string;
+  model_id: string;
+  problem_type: string;
+  target_column: string | null;
+  target_classes: string[];
+  features: FeatureMetaSchema[];
+  sample_rows: SampleRowItem[];
+}
+
+export interface LocalFactorItem {
+  feature: string;
+  importance: number;
+  contribution: number | null;
+  direction: string | null;
+  original_feature: string | null;
+}
+
+export interface CounterfactualItem {
+  feature: string;
+  feature_type: string;
+  current_value: string | number | null;
+  proposed_value: string | number;
+  delta: string;
+  projected_prediction: string | number;
+  projected_confidence: number | null;
+  action_text: string;
+  impact: string;
+}
+
+export interface PredictionResponse {
+  prediction: string | number;
+  prediction_label: string;
+  probabilities: Record<string, number>;
+  confidence: number | null;
+  local_factors: LocalFactorItem[];
+  counterfactuals: CounterfactualItem[];
+}

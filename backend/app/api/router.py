@@ -1,6 +1,19 @@
 from fastapi import APIRouter
 
-from .routes import business, capabilities, configuration, datasets, execution, experiments, explainability, health, models, profiling, workflows
+from .routes import (
+    business,
+    capabilities,
+    configuration,
+    datasets,
+    execution,
+    experiments,
+    explainability,
+    health,
+    inference,
+    models,
+    profiling,
+    workflows,
+)
 
 
 api_router = APIRouter()
@@ -13,5 +26,7 @@ api_router.include_router(workflows.router)
 api_router.include_router(execution.router)
 api_router.include_router(models.router)
 api_router.include_router(explainability.router)
+api_router.include_router(inference.router)
 api_router.include_router(business.router)
 api_router.include_router(experiments.router)
+

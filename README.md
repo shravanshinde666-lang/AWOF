@@ -150,6 +150,28 @@ and ranks at most 100 entities by default. Clustering workflows correctly report
 business prioritization as not applicable. See [Explainability](docs/algorithms/explainability.md)
 and [CIPS](docs/algorithms/cips.md).
 
+## Live Inference & Counterfactual What-If Analysis
+
+AWOF provides real-time model inference and counterfactual explanation for
+deployed/fitted pipelines:
+
+- **Interactive Live Prediction**: Provides dynamic feature schemas (`GET /api/v1/datasets/{dataset_id}/inference/schema`)
+  with automatic attribute boundaries, allowed categories, and baseline values.
+  Users can supply custom inputs (`POST /api/v1/datasets/{dataset_id}/inference/predict`)
+  to obtain real-time class predictions and confidence probabilities.
+- **Counterfactual "What-If" Engine**: Explains what input adjustments would flip
+  or change a model's prediction toward a desired target class. It identifies the
+  closest feasible feature perturbations while respecting feature ranges and categoricals.
+
+## Advanced Data Quality Intelligence & Hyperparameter Tuning
+
+- **Extended Data Quality Profiling**: Automatically detects high-cardinality features,
+  zero/near-zero variance columns, skewness anomalies, and target leakage risks during profiling.
+- **Automated Hyperparameter Optimization (HPO)**: Supports parameter search and tuning
+  (e.g., via Optuna/Randomized search) integrated directly into the model training pipeline.
+- **Expanded Evaluation Metrics**: Computes and reports Precision-Recall AUC (PR-AUC),
+  Balanced Accuracy, Brier score, and probability calibration curves alongside standard ROC-AUC, F1, and MSE/RMSE.
+
 ## Research Experiment & Benchmarking
 
 Phase 8 compares a deterministic, reasonable fixed tabular pipeline with the
